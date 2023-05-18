@@ -1,0 +1,8 @@
+site_name: "RouteML"
+
+theme:
+  name: "material"
+
+plugins:
+  - search
+  - mkdocstrings
