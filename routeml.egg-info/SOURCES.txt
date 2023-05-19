@@ -9,8 +9,12 @@ routeml.egg-info/dependency_links.txt
 routeml.egg-info/top_level.txt
 tests/__init__.py
 tests/test_cvrp.py
-tests/utils/__init__.py
-tests/utils/test_parse_vrplib_file.py
-tests/utils/test_parse_vrplib_solution.py
-tests/utils/test_routes_to_solution.py
-tests/utils/test_solution_to_routes.py
+tests/integration/__init__.py
+tests/integration/test_vrplib_cost_integration.py
+tests/unit/__init__.py
+tests/unit/utils/__init__.py
+tests/unit/utils/test_get_cvrp_cost.py
+tests/unit/utils/test_parse_vrplib_file.py
+tests/unit/utils/test_parse_vrplib_solution.py
+tests/unit/utils/test_routes_to_solution.py
+tests/unit/utils/test_solution_to_routes.py
