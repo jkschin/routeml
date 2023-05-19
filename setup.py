@@ -18,7 +18,10 @@ setup(
         'Programming Language :: Python :: 3.9',
     ],
     install_requires=[
-        "numpy"
+        "numpy",
+        "scipy",
+        "matplotlib",
+        "hygese"
         # Add any dependencies required by your package
     ],
 )

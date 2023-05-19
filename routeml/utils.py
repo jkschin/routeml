@@ -277,26 +277,31 @@ def get_cvrp_problem(num_nodes):
         num_nodes (int): Number of nodes in the problem. Excluding depot.
 
     Returns:
-        tuple: Tuple containing the node coordinates (dict) and the demand (dict).
+        tuple: Tuple containing the node coordinates (np.ndarray) and the demand (np.ndarray).
     """
     # Generate depot
     depot_id = 0
-    depot_coords = (random.uniform(0, 1), random.uniform(0, 1))
-    depot_demand = 0
+    depot_coords = np.array([random.uniform(0, 1), random.uniform(0, 1)])
+    depot_demand = np.array([0])
 
-    # Generate node coordinates dictionary
-    node_coords = {depot_id: depot_coords}
-    demands = {depot_id: depot_demand}
+    # Generate node coordinates array
+    node_coords = np.empty((num_nodes + 1, 2))
+    node_coords[depot_id] = depot_coords
+
+    # Generate demand array
+    demands = np.empty((num_nodes + 1))
+    demands[depot_id] = depot_demand
 
     # Generate node coordinates and demand
     for node_id in range(1, num_nodes + 1):
         x = random.uniform(0, 1)
         y = random.uniform(0, 1)
         demand_val = random.randint(1, 9)
-        node_coords[node_id] = (float(x), float(y))
+        node_coords[node_id] = np.array([float(x), float(y)])
         demands[node_id] = int(demand_val)
 
     return node_coords, demands
+
 
 
 
