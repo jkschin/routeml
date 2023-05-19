@@ -10,5 +10,7 @@ routeml.egg-info/top_level.txt
 tests/__init__.py
 tests/test_cvrp.py
 tests/utils/__init__.py
+tests/utils/test_parse_vrplib_file.py
+tests/utils/test_parse_vrplib_solution.py
 tests/utils/test_routes_to_solution.py
 tests/utils/test_solution_to_routes.py
