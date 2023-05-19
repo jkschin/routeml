@@ -1,6 +1,7 @@
 import re
 import requests
 import math
+import random
 
 def routes_to_solution(routes):
     """
@@ -266,5 +267,36 @@ def is_feasible(routes, demand, capacity):
             return False
 
     return True
+
+def get_cvrp_problem(num_nodes):
+    """
+    Generate a random CVRP problem.
+    Follows: "https://arxiv.org/pdf/1802.04240.pdf"
+
+    Args:
+        num_nodes (int): Number of nodes in the problem. Excluding depot.
+
+    Returns:
+        tuple: Tuple containing the node coordinates (dict) and the demand (dict).
+    """
+    # Generate depot
+    depot_id = 0
+    depot_coords = (random.uniform(0, 1), random.uniform(0, 1))
+    depot_demand = 0
+
+    # Generate node coordinates dictionary
+    node_coords = {depot_id: depot_coords}
+    demand = {depot_id: depot_demand}
+
+    # Generate node coordinates and demand
+    for node_id in range(1, num_nodes + 1):
+        x = random.uniform(0, 1)
+        y = random.uniform(0, 1)
+        demand_val = random.randint(1, 9)
+        node_coords[node_id] = (float(x), float(y))
+        demand[node_id] = int(demand_val)
+
+    return node_coords, demand
+
 
 
