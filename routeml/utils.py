@@ -218,3 +218,53 @@ def get_cvrp_cost(routes_or_solution, coordinates, uchoa=False):
         total_cost += distance
 
     return total_cost
+
+def get_route_demand(routes, demand):
+    """
+    Compute the demand of each route.
+
+    Args:
+        routes (list): List of routes.
+
+    Returns:
+        route_demand (list): List containing the demand of each route.
+    """
+    route_demands = []
+    for route in routes:
+        route_demand = 0
+        for node in route:
+            try:
+                route_demand += demand[node]
+            except KeyError:
+                raise Exception(f"Node {node} not found in the demand dictionary")
+        route_demands.append(route_demand)
+    return route_demands
+
+def is_feasible(routes, demand, capacity):
+    """
+    Check if a CVRP solution is feasible.
+
+    Args:
+        routes (list): List of routes.
+        demand (dict): Dictionary containing node IDs as keys and corresponding demand as values.
+        capacity (int): Vehicle capacity.
+
+    Returns:
+        bool: True if the solution is feasible, False otherwise.
+    """
+    # Convert routes to a single solution
+    solution = routes_to_solution(routes)
+
+    # Check if each node appears only once
+    if set(solution) != set(demand.keys()):
+        return False
+
+    # Compute the demand for each route
+    for route in routes:
+        total_demand = sum(demand[node] for node in route)
+        if total_demand > capacity:
+            return False
+
+    return True
+
+
