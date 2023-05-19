@@ -252,6 +252,20 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#routeml.utils.get_route_demand" class="md-nav__link">
+    get_route_demand()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#routeml.utils.is_feasible" class="md-nav__link">
+    is_feasible()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#routeml.utils.parse_vrplib_file" class="md-nav__link">
     parse_vrplib_file()
   </a>
@@ -330,6 +344,20 @@
         <li class="md-nav__item">
   <a href="#routeml.utils.get_cvrp_cost" class="md-nav__link">
     get_cvrp_cost()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#routeml.utils.get_route_demand" class="md-nav__link">
+    get_route_demand()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#routeml.utils.is_feasible" class="md-nav__link">
+    is_feasible()
   </a>
   
 </li>
@@ -664,6 +692,243 @@
         <span class="n">total_cost</span> <span class="o">+=</span> <span class="n">distance</span>
 
     <span class="k">return</span> <span class="n">total_cost</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="routeml.utils.get_route_demand" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_route_demand</span><span class="p">(</span><span class="n">routes</span><span class="p">,</span> <span class="n">demand</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Compute the demand of each route.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>routes</code></td>
+          <td>
+                <code>list</code>
+          </td>
+          <td><p>List of routes.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>route_demand</code></td>          <td>
+                <code>list</code>
+          </td>
+          <td><p>List containing the demand of each route.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>routeml/utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_route_demand</span><span class="p">(</span><span class="n">routes</span><span class="p">,</span> <span class="n">demand</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the demand of each route.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        routes (list): List of routes.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        route_demand (list): List containing the demand of each route.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">route_demands</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">route</span> <span class="ow">in</span> <span class="n">routes</span><span class="p">:</span>
+        <span class="n">route_demand</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">route</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">route_demand</span> <span class="o">+=</span> <span class="n">demand</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Node </span><span class="si">{</span><span class="n">node</span><span class="si">}</span><span class="s2"> not found in the demand dictionary&quot;</span><span class="p">)</span>
+        <span class="n">route_demands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">route_demand</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">route_demands</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="routeml.utils.is_feasible" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">is_feasible</span><span class="p">(</span><span class="n">routes</span><span class="p">,</span> <span class="n">demand</span><span class="p">,</span> <span class="n">capacity</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Check if a CVRP solution is feasible.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>routes</code></td>
+          <td>
+                <code>list</code>
+          </td>
+          <td><p>List of routes.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>demand</code></td>
+          <td>
+                <code>dict</code>
+          </td>
+          <td><p>Dictionary containing node IDs as keys and corresponding demand as values.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>capacity</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>Vehicle capacity.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>bool</code></td>          <td>
+          </td>
+          <td><p>True if the solution is feasible, False otherwise.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>routeml/utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_feasible</span><span class="p">(</span><span class="n">routes</span><span class="p">,</span> <span class="n">demand</span><span class="p">,</span> <span class="n">capacity</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a CVRP solution is feasible.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        routes (list): List of routes.</span>
+<span class="sd">        demand (dict): Dictionary containing node IDs as keys and corresponding demand as values.</span>
+<span class="sd">        capacity (int): Vehicle capacity.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: True if the solution is feasible, False otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Convert routes to a single solution</span>
+    <span class="n">solution</span> <span class="o">=</span> <span class="n">routes_to_solution</span><span class="p">(</span><span class="n">routes</span><span class="p">)</span>
+
+    <span class="c1"># Check if each node appears only once</span>
+    <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">solution</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">set</span><span class="p">(</span><span class="n">demand</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># Compute the demand for each route</span>
+    <span class="k">for</span> <span class="n">route</span> <span class="ow">in</span> <span class="n">routes</span><span class="p">:</span>
+        <span class="n">total_demand</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">demand</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">route</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">total_demand</span> <span class="o">&gt;</span> <span class="n">capacity</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">True</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
