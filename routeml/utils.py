@@ -2,6 +2,7 @@ import re
 import requests
 import math
 import random
+import numpy as np
 
 def routes_to_solution(routes):
     """
@@ -122,25 +123,24 @@ def parse_vrplib_file(source):
     if capacity_match:
         data['capacity'] = int(capacity_match.group(1))
 
-    # Extracting node coordinates
     node_coords_match = re.search(r'NODE_COORD_SECTION\s*(.+?)\s*DEMAND_SECTION', content, re.DOTALL)
     if node_coords_match:
         node_coords_str = node_coords_match.group(1).strip()
-        node_coords = {}
+        node_coords = []
         for line in node_coords_str.split('\n'):
             node_id, x, y = re.findall(r'(\d+)\s+([-+]?\d*\.?\d+)\s+([-+]?\d*\.?\d+)', line)[0]
-            node_coords[int(node_id) - 1] = (float(x), float(y))
-        data['node_coords'] = node_coords
+            node_coords.append([float(x), float(y)])
+        data['node_coords'] = np.array(node_coords)
 
     # Extracting demand information
     demand_section_match = re.search(r'DEMAND_SECTION\s*(.+?)\s*DEPOT_SECTION', content, re.DOTALL)
     if demand_section_match:
         demand_section_str = demand_section_match.group(1).strip()
-        demand = {}
+        demand = []
         for line in demand_section_str.split('\n'):
             node_id, demand_val = re.findall(r'(\d+)\s+(-?\d+)', line)[0]
-            demand[int(node_id) - 1] = int(demand_val)
-        data['demand'] = demand
+            demand.append(int(demand_val))
+        data['demand'] = np.array(demand)
 
     # Extracting depot information
     depot_section_match = re.search(r'DEPOT_SECTION\s*(.+?)\s*EOF', content, re.DOTALL)
@@ -194,7 +194,7 @@ def get_cvrp_cost(routes_or_solution, coordinates, uchoa=False):
 
     Args:
         routes_or_solution (list or solution): List of routes or a solution.
-        coordinates (dict): Dictionary containing node IDs as keys and corresponding coordinates as values.
+        coordinates (np.array): Array of node coordinates with shape (n_nodes, 2).
         uchoa (bool): Whether to round the distances to the nearest integer. Follows the 2014 paper.
 
     Returns:
@@ -286,7 +286,7 @@ def get_cvrp_problem(num_nodes):
 
     # Generate node coordinates dictionary
     node_coords = {depot_id: depot_coords}
-    demand = {depot_id: depot_demand}
+    demands = {depot_id: depot_demand}
 
     # Generate node coordinates and demand
     for node_id in range(1, num_nodes + 1):
@@ -294,9 +294,9 @@ def get_cvrp_problem(num_nodes):
         y = random.uniform(0, 1)
         demand_val = random.randint(1, 9)
         node_coords[node_id] = (float(x), float(y))
-        demand[node_id] = int(demand_val)
+        demands[node_id] = int(demand_val)
 
-    return node_coords, demand
+    return node_coords, demands
 
 
 

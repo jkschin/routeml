@@ -18,6 +18,7 @@ setup(
         'Programming Language :: Python :: 3.9',
     ],
     install_requires=[
+        "numpy"
         # Add any dependencies required by your package
     ],
 )

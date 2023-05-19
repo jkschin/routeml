@@ -29,8 +29,9 @@ class VRPLIBParserTestCase(unittest.TestCase):
             self.assertEqual(parsed_data['edge_weight_type'], "EUC_2D")
             self.assertEqual(parsed_data['capacity'], 206)
 
-            self.assertEqual(len(parsed_data['node_coords']), 101)
-            self.assertEqual(len(parsed_data['demand']), 101)
+            self.assertEqual(parsed_data['node_coords'].shape[0], 101)
+            self.assertEqual(parsed_data['node_coords'].shape[1], 2)
+            self.assertEqual(parsed_data['demand'].shape[0], 101)
             self.assertEqual(len(parsed_data['depot_ids']), 1)
 
             # Additional assertions or validations on the parsed data
