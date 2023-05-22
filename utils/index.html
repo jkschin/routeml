@@ -252,6 +252,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#routeml.utils.get_cvrp_problem" class="md-nav__link">
+    get_cvrp_problem()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#routeml.utils.get_route_demand" class="md-nav__link">
     get_route_demand()
   </a>
@@ -344,6 +351,13 @@
         <li class="md-nav__item">
   <a href="#routeml.utils.get_cvrp_cost" class="md-nav__link">
     get_cvrp_cost()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#routeml.utils.get_cvrp_problem" class="md-nav__link">
+    get_cvrp_problem()
   </a>
   
 </li>
@@ -501,9 +515,7 @@
 
       <details class="quote">
         <summary>Source code in <code>routeml/utils.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
 <span class="normal">28</span>
 <span class="normal">29</span>
 <span class="normal">30</span>
@@ -524,7 +536,9 @@
 <span class="normal">45</span>
 <span class="normal">46</span>
 <span class="normal">47</span>
-<span class="normal">48</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">add_depot_to_routes</span><span class="p">(</span><span class="n">routes</span><span class="p">):</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">add_depot_to_routes</span><span class="p">(</span><span class="n">routes</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Adds the depot node to the beginning and end of each route.</span>
 
@@ -592,9 +606,9 @@
         <tr>
           <td><code>coordinates</code></td>
           <td>
-                <code>dict</code>
+                <code><span title="numpy">np</span>.<span title="numpy.array">array</span></code>
           </td>
-          <td><p>Dictionary containing node IDs as keys and corresponding coordinates as values.</p></td>
+          <td><p>Array of node coordinates with shape (n_nodes, 2).</p></td>
           <td>
               <em>required</em>
           </td>
@@ -631,8 +645,7 @@
 
       <details class="quote">
         <summary>Source code in <code>routeml/utils.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">190</span>
-<span class="normal">191</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">191</span>
 <span class="normal">192</span>
 <span class="normal">193</span>
 <span class="normal">194</span>
@@ -661,13 +674,14 @@
 <span class="normal">217</span>
 <span class="normal">218</span>
 <span class="normal">219</span>
-<span class="normal">220</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_cvrp_cost</span><span class="p">(</span><span class="n">routes_or_solution</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">uchoa</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="normal">220</span>
+<span class="normal">221</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_cvrp_cost</span><span class="p">(</span><span class="n">routes_or_solution</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">uchoa</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the total cost of a CVRP solution.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        routes_or_solution (list or solution): List of routes or a solution.</span>
-<span class="sd">        coordinates (dict): Dictionary containing node IDs as keys and corresponding coordinates as values.</span>
+<span class="sd">        coordinates (np.array): Array of node coordinates with shape (n_nodes, 2).</span>
 <span class="sd">        uchoa (bool): Whether to round the distances to the nearest integer. Follows the 2014 paper.</span>
 
 <span class="sd">    Returns:</span>
@@ -692,6 +706,135 @@
         <span class="n">total_cost</span> <span class="o">+=</span> <span class="n">distance</span>
 
     <span class="k">return</span> <span class="n">total_cost</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="routeml.utils.get_cvrp_problem" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_cvrp_problem</span><span class="p">(</span><span class="n">num_nodes</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Generate a random CVRP problem.
+Follows: "https://arxiv.org/pdf/1802.04240.pdf"</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>num_nodes</code></td>
+          <td>
+                <code>int</code>
+          </td>
+          <td><p>Number of nodes in the problem. Excluding depot.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>tuple</code></td>          <td>
+          </td>
+          <td><p>Tuple containing the node coordinates (np.ndarray) and the demand (np.ndarray).</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>routeml/utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_cvrp_problem</span><span class="p">(</span><span class="n">num_nodes</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a random CVRP problem.</span>
+<span class="sd">    Follows: &quot;https://arxiv.org/pdf/1802.04240.pdf&quot;</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        num_nodes (int): Number of nodes in the problem. Excluding depot.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: Tuple containing the node coordinates (np.ndarray) and the demand (np.ndarray).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Generate depot</span>
+    <span class="n">depot_id</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">depot_coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
+    <span class="n">depot_demand</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1"># Generate node coordinates array</span>
+    <span class="n">node_coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">num_nodes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">node_coords</span><span class="p">[</span><span class="n">depot_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">depot_coords</span>
+
+    <span class="c1"># Generate demand array</span>
+    <span class="n">demands</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">num_nodes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">demands</span><span class="p">[</span><span class="n">depot_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">depot_demand</span>
+
+    <span class="c1"># Generate node coordinates and demand</span>
+    <span class="k">for</span> <span class="n">node_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_nodes</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">demand_val</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+        <span class="n">node_coords</span><span class="p">[</span><span class="n">node_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">y</span><span class="p">)])</span>
+        <span class="n">demands</span><span class="p">[</span><span class="n">node_id</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">demand_val</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">node_coords</span><span class="p">,</span> <span class="n">demands</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -756,8 +899,7 @@
 
       <details class="quote">
         <summary>Source code in <code>routeml/utils.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">222</span>
-<span class="normal">223</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">223</span>
 <span class="normal">224</span>
 <span class="normal">225</span>
 <span class="normal">226</span>
@@ -775,7 +917,8 @@
 <span class="normal">238</span>
 <span class="normal">239</span>
 <span class="normal">240</span>
-<span class="normal">241</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_route_demand</span><span class="p">(</span><span class="n">routes</span><span class="p">,</span> <span class="n">demand</span><span class="p">):</span>
+<span class="normal">241</span>
+<span class="normal">242</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_route_demand</span><span class="p">(</span><span class="n">routes</span><span class="p">,</span> <span class="n">demand</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the demand of each route.</span>
 
@@ -878,8 +1021,7 @@
 
       <details class="quote">
         <summary>Source code in <code>routeml/utils.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">243</span>
-<span class="normal">244</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">244</span>
 <span class="normal">245</span>
 <span class="normal">246</span>
 <span class="normal">247</span>
@@ -903,7 +1045,8 @@
 <span class="normal">265</span>
 <span class="normal">266</span>
 <span class="normal">267</span>
-<span class="normal">268</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_feasible</span><span class="p">(</span><span class="n">routes</span><span class="p">,</span> <span class="n">demand</span><span class="p">,</span> <span class="n">capacity</span><span class="p">):</span>
+<span class="normal">268</span>
+<span class="normal">269</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_feasible</span><span class="p">(</span><span class="n">routes</span><span class="p">,</span> <span class="n">demand</span><span class="p">,</span> <span class="n">capacity</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check if a CVRP solution is feasible.</span>
 
@@ -1001,9 +1144,7 @@
 
       <details class="quote">
         <summary>Source code in <code>routeml/utils.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 71</span>
-<span class="normal"> 72</span>
-<span class="normal"> 73</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 73</span>
 <span class="normal"> 74</span>
 <span class="normal"> 75</span>
 <span class="normal"> 76</span>
@@ -1081,7 +1222,8 @@
 <span class="normal">148</span>
 <span class="normal">149</span>
 <span class="normal">150</span>
-<span class="normal">151</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">parse_vrplib_file</span><span class="p">(</span><span class="n">source</span><span class="p">):</span>
+<span class="normal">151</span>
+<span class="normal">152</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">parse_vrplib_file</span><span class="p">(</span><span class="n">source</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parses a VRPLIB file and returns a dictionary with the following keys:</span>
 <span class="sd">    - name: Name of the problem.</span>
@@ -1134,25 +1276,24 @@
     <span class="k">if</span> <span class="n">capacity_match</span><span class="p">:</span>
         <span class="n">data</span><span class="p">[</span><span class="s1">&#39;capacity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">capacity_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
 
-    <span class="c1"># Extracting node coordinates</span>
     <span class="n">node_coords_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;NODE_COORD_SECTION\s*(.+?)\s*DEMAND_SECTION&#39;</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">node_coords_match</span><span class="p">:</span>
         <span class="n">node_coords_str</span> <span class="o">=</span> <span class="n">node_coords_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="n">node_coords</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">node_coords</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">node_coords_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
             <span class="n">node_id</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\d+)\s+([-+]?\d*\.?\d+)\s+([-+]?\d*\.?\d+)&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">node_coords</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">node_id</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;node_coords&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">node_coords</span>
+            <span class="n">node_coords</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">y</span><span class="p">)])</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;node_coords&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">node_coords</span><span class="p">)</span>
 
     <span class="c1"># Extracting demand information</span>
     <span class="n">demand_section_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;DEMAND_SECTION\s*(.+?)\s*DEPOT_SECTION&#39;</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">demand_section_match</span><span class="p">:</span>
         <span class="n">demand_section_str</span> <span class="o">=</span> <span class="n">demand_section_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="n">demand</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">demand</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">demand_section_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
             <span class="n">node_id</span><span class="p">,</span> <span class="n">demand_val</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\d+)\s+(-?\d+)&#39;</span><span class="p">,</span> <span class="n">line</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">demand</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">node_id</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">demand_val</span><span class="p">)</span>
-        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;demand&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">demand</span>
+            <span class="n">demand</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">demand_val</span><span class="p">))</span>
+        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;demand&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">demand</span><span class="p">)</span>
 
     <span class="c1"># Extracting depot information</span>
     <span class="n">depot_section_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;DEPOT_SECTION\s*(.+?)\s*EOF&#39;</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
@@ -1225,8 +1366,7 @@
 
       <details class="quote">
         <summary>Source code in <code>routeml/utils.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">153</span>
-<span class="normal">154</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">154</span>
 <span class="normal">155</span>
 <span class="normal">156</span>
 <span class="normal">157</span>
@@ -1260,7 +1400,8 @@
 <span class="normal">185</span>
 <span class="normal">186</span>
 <span class="normal">187</span>
-<span class="normal">188</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">parse_vrplib_solution</span><span class="p">(</span><span class="n">source</span><span class="p">):</span>
+<span class="normal">188</span>
+<span class="normal">189</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">parse_vrplib_solution</span><span class="p">(</span><span class="n">source</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parses a solution file from the VRPLIB website and returns the routes and cost.</span>
 
@@ -1359,9 +1500,7 @@
 
       <details class="quote">
         <summary>Source code in <code>routeml/utils.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 7</span>
 <span class="normal"> 8</span>
 <span class="normal"> 9</span>
 <span class="normal">10</span>
@@ -1377,7 +1516,9 @@
 <span class="normal">20</span>
 <span class="normal">21</span>
 <span class="normal">22</span>
-<span class="normal">23</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">routes_to_solution</span><span class="p">(</span><span class="n">routes</span><span class="p">):</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">routes_to_solution</span><span class="p">(</span><span class="n">routes</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts a list of routes into a solution (list of routes).</span>
 
@@ -1459,9 +1600,7 @@
 
       <details class="quote">
         <summary>Source code in <code>routeml/utils.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">50</span>
-<span class="normal">51</span>
-<span class="normal">52</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">52</span>
 <span class="normal">53</span>
 <span class="normal">54</span>
 <span class="normal">55</span>
@@ -1477,7 +1616,9 @@
 <span class="normal">65</span>
 <span class="normal">66</span>
 <span class="normal">67</span>
-<span class="normal">68</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">solution_to_routes</span><span class="p">(</span><span class="n">solution</span><span class="p">):</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">solution_to_routes</span><span class="p">(</span><span class="n">solution</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Converts a solution (list of nodes) into a list of routes.</span>
 
