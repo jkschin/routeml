@@ -8,11 +8,11 @@ from routeml.solvers import hgs_solve
 class CVRPIntegrationTest(unittest.TestCase):
     def test_solve_and_plot_cvrp(self):
         # Generate a CVRP problem
-        num_nodes = 20
+        num_nodes = 100
         node_coords, demands = get_cvrp_problem(num_nodes)
 
         # Solve the problem using HGS or any other solver
-        result = hgs_solve(node_coords, demands, 30, time_limit=1)
+        result = hgs_solve(node_coords, demands, 50, time_limit=2)
         # (Replace with your solver implementation)
 
         # Obtain the solution routes
