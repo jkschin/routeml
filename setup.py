@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='routeml',
-    version='0.2.0',
+    version='0.3.0',
     description='Python package for CVRP utilities',
     author='Your Name',
     author_email='jkschin@mit.edu',
