@@ -302,6 +302,54 @@ def get_cvrp_problem(num_nodes):
 
     return node_coords, demands
 
+def pad_matrix(matrix, new_shape):
+    """
+    Pads a matrix to the right and bottom with zeros.
+
+    Args:
+        matrix: the input matrix to pad.
+        new_shape: the desired shape after padding.
+
+    Returns:
+        returns the padded matrix.
+
+    ```python
+    import numpy as np
+    matrix = np.arange(10).reshape(2, 5)
+    pad_matrix(matrix, (3, 6))
+    array([[0, 1, 2, 3, 4, 0],
+           [5, 6, 7, 8, 9, 0],
+           [0, 0, 0, 0, 0, 0]])
+    ```
+    """
+    assert len(new_shape) == len(matrix.shape), "new_shape and matrix dimensions must match"
+    padding = [(0, new_dim - old_dim) if new_dim > old_dim else (0, 0) for old_dim, new_dim in zip(matrix.shape, new_shape)]
+    return np.pad(matrix, padding, 'constant')
+
+def get_submatrix(indices, matrix, new_shape):
+    """
+    Gets a submatrix from a matrix and pads it to the right and bottom with zeros.
+
+    Args:
+        indices: the indices to index on the matrix.
+        matrix: the input matrix to index.
+        new_shape: the desired shape after padding.
+
+    Returns:
+        returns the submatrix after indexing and padding.
+
+    ```python
+    import numpy as np
+    matrix = np.arange(10).reshape(2, 5)
+    indices = [1, 2, 3]
+    array([[1, 2, 3, 0, 0, 0],
+           [6, 7, 8, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0]])
+    ```
+    """
+    submatrix = matrix[:, indices]
+    return pad_matrix(submatrix, new_shape)
+
 
 
 
