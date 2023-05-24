@@ -297,8 +297,22 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#routeml.utils.get_submatrix" class="md-nav__link">
+    get_submatrix()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#routeml.utils.is_feasible" class="md-nav__link">
     is_feasible()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#routeml.utils.pad_matrix" class="md-nav__link">
+    pad_matrix()
   </a>
   
 </li>
@@ -407,8 +421,22 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#routeml.utils.get_submatrix" class="md-nav__link">
+    get_submatrix()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#routeml.utils.is_feasible" class="md-nav__link">
     is_feasible()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#routeml.utils.pad_matrix" class="md-nav__link">
+    pad_matrix()
   </a>
   
 </li>
@@ -996,6 +1024,138 @@ Follows: "https://arxiv.org/pdf/1802.04240.pdf"</p>
 
 
 
+<h3 id="routeml.utils.get_submatrix" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_submatrix</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Gets a submatrix from a matrix and pads it to the right and bottom with zeros.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>indices</code></td>
+          <td>
+          </td>
+          <td><p>the indices to index on the matrix.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>matrix</code></td>
+          <td>
+          </td>
+          <td><p>the input matrix to index.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>new_shape</code></td>
+          <td>
+          </td>
+          <td><p>the desired shape after padding.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+          </td>
+          <td><p>returns the submatrix after indexing and padding.</p></td>
+        </tr>
+    </tbody>
+  </table>
+      <pre><code class="language-python">import numpy as np
+matrix = np.arange(10).reshape(2, 5)
+indices = [1, 2, 3]
+array([[1, 2, 3, 0, 0, 0],
+       [6, 7, 8, 0, 0, 0],
+       [0, 0, 0, 0, 0, 0]])
+</code></pre>
+
+      <details class="quote">
+        <summary>Source code in <code>routeml/utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span>
+<span class="normal">338</span>
+<span class="normal">339</span>
+<span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_submatrix</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gets a submatrix from a matrix and pads it to the right and bottom with zeros.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        indices: the indices to index on the matrix.</span>
+<span class="sd">        matrix: the input matrix to index.</span>
+<span class="sd">        new_shape: the desired shape after padding.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        returns the submatrix after indexing and padding.</span>
+
+<span class="sd">    ```python</span>
+<span class="sd">    import numpy as np</span>
+<span class="sd">    matrix = np.arange(10).reshape(2, 5)</span>
+<span class="sd">    indices = [1, 2, 3]</span>
+<span class="sd">    array([[1, 2, 3, 0, 0, 0],</span>
+<span class="sd">           [6, 7, 8, 0, 0, 0],</span>
+<span class="sd">           [0, 0, 0, 0, 0, 0]])</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">submatrix</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">[:,</span> <span class="n">indices</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">pad_matrix</span><span class="p">(</span><span class="n">submatrix</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
 <h3 id="routeml.utils.is_feasible" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">is_feasible</span><span class="p">(</span><span class="n">routes</span><span class="p">,</span> <span class="n">demand</span><span class="p">,</span> <span class="n">capacity</span><span class="p">)</span></code>
 
@@ -1120,6 +1280,129 @@ Follows: "https://arxiv.org/pdf/1802.04240.pdf"</p>
             <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">return</span> <span class="kc">True</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="routeml.utils.pad_matrix" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">pad_matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Pads a matrix to the right and bottom with zeros.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>matrix</code></td>
+          <td>
+          </td>
+          <td><p>the input matrix to pad.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>new_shape</code></td>
+          <td>
+          </td>
+          <td><p>the desired shape after padding.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+          </td>
+          <td><p>returns the padded matrix.</p></td>
+        </tr>
+    </tbody>
+  </table>
+      <pre><code class="language-python">import numpy as np
+matrix = np.arange(10).reshape(2, 5)
+pad_matrix(matrix, (3, 6))
+array([[0, 1, 2, 3, 4, 0],
+       [5, 6, 7, 8, 9, 0],
+       [0, 0, 0, 0, 0, 0]])
+</code></pre>
+
+      <details class="quote">
+        <summary>Source code in <code>routeml/utils.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">pad_matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Pads a matrix to the right and bottom with zeros.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        matrix: the input matrix to pad.</span>
+<span class="sd">        new_shape: the desired shape after padding.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        returns the padded matrix.</span>
+
+<span class="sd">    ```python</span>
+<span class="sd">    import numpy as np</span>
+<span class="sd">    matrix = np.arange(10).reshape(2, 5)</span>
+<span class="sd">    pad_matrix(matrix, (3, 6))</span>
+<span class="sd">    array([[0, 1, 2, 3, 4, 0],</span>
+<span class="sd">           [5, 6, 7, 8, 9, 0],</span>
+<span class="sd">           [0, 0, 0, 0, 0, 0]])</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_shape</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="s2">&quot;new_shape and matrix dimensions must match&quot;</span>
+    <span class="n">padding</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="n">new_dim</span> <span class="o">-</span> <span class="n">old_dim</span><span class="p">)</span> <span class="k">if</span> <span class="n">new_dim</span> <span class="o">&gt;</span> <span class="n">old_dim</span> <span class="k">else</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">old_dim</span><span class="p">,</span> <span class="n">new_dim</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">padding</span><span class="p">,</span> <span class="s1">&#39;constant&#39;</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
