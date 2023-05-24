@@ -70,6 +70,38 @@ def solution_to_routes(solution):
     return routes
 
 
+def solution_to_adjacency_matrix(cvrp_solution):
+    """
+    Converts a CVRP solution into a symmetric adjacency matrix.
+
+    Args:
+        cvrp_solution (list): CVRP solution (list of nodes).
+
+    Returns:
+        np.ndarray: Symmetric adjacency matrix.
+    """
+    num_nodes = max(cvrp_solution) + 1
+    matrix = np.zeros((num_nodes, num_nodes))
+
+    for i in range(len(cvrp_solution) - 1):
+        matrix[cvrp_solution[i]][cvrp_solution[i + 1]] = 1
+        matrix[cvrp_solution[i + 1]][cvrp_solution[i]] = 1
+    return matrix
+
+def column_normalize_adjacency_matrix(adj_matrix):
+    """
+    Normalize an adjacency matrix by column.
+
+    Args:
+        adj_matrix (np.ndarray): Binary adjacency matrix.
+
+    Returns:
+        np.ndarray: Normalized adjacency matrix.
+    """
+    col_sums = np.sum(adj_matrix, axis=0)
+    normalized_matrix = adj_matrix / col_sums[np.newaxis, :]
+    return normalized_matrix
+
 def parse_vrplib_file(source):
     """
     Parses a VRPLIB file and returns a dictionary with the following keys:
@@ -349,6 +381,32 @@ def get_submatrix(indices, matrix, new_shape):
     """
     submatrix = matrix[:, indices]
     return pad_matrix(submatrix, new_shape)
+
+def get_random_solution(N):
+    """
+    Generates a random CVRP solution. Mostly for debugging purposes.
+
+    Args:
+        N (int): Number of nodes in the problem. Excluding depot.
+    
+    Returns:
+        lst (list): List containing the solution.
+    """
+    # Generate a random list from 0 to N
+    lst = list(range(N + 1))
+
+    # Insert 0 at the end
+    lst.append(0)
+
+    # Randomly insert 1 to 5 zeros in between
+    num_zeros = random.randint(1, 5)
+    for _ in range(num_zeros):
+        index = random.randint(1, len(lst) - 1)  # Select a random index between 1 and len(lst)-1
+        while lst[index] == 0 or lst[index-1] == 0:
+            index = random.randint(1, len(lst) - 1)  # Select a new index if adjacent elements are already 0
+        lst.insert(index, 0)
+
+    return lst
 
 
 
