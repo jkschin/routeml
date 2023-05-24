@@ -1,6 +1,6 @@
-# Documentation for `routeml.utils`
+# Documentation for `routeml.draw`
 
-::: routeml.utils
+::: routeml.draw
     handler: python
     options:
         show_root_heading: true

@@ -1,6 +1,6 @@
-# Documentation for `routeml.utils`
+# Documentation for `routeml.solvers`
 
-::: routeml.utils
+::: routeml.solvers
     handler: python
     options:
         show_root_heading: true
