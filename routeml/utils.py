@@ -334,7 +334,7 @@ def get_cvrp_problem(num_nodes):
 
     return node_coords, demands
 
-def pad_matrix(matrix, new_shape):
+def pad_matrix(matrix, new_shape, constant_value=0):
     """
     Pads a matrix to the right and bottom with zeros.
 
@@ -356,7 +356,7 @@ def pad_matrix(matrix, new_shape):
     """
     assert len(new_shape) == len(matrix.shape), "new_shape and matrix dimensions must match"
     padding = [(0, new_dim - old_dim) if new_dim > old_dim else (0, 0) for old_dim, new_dim in zip(matrix.shape, new_shape)]
-    return np.pad(matrix, padding, 'constant')
+    return np.pad(matrix, padding, 'constant', constant_values=constant_value)
 
 def get_submatrix(indices, matrix, new_shape):
     """
