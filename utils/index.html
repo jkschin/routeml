@@ -1534,7 +1534,7 @@ array([[1, 2, 3, 0, 0, 0],
 
 
 <h3 id="routeml.utils.pad_matrix" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">pad_matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">pad_matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">,</span> <span class="n">constant_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
 
 </h3>
 
@@ -1623,7 +1623,7 @@ array([[0, 1, 2, 3, 4, 0],
 <span class="normal">356</span>
 <span class="normal">357</span>
 <span class="normal">358</span>
-<span class="normal">359</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">pad_matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">):</span>
+<span class="normal">359</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">pad_matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">,</span> <span class="n">constant_value</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Pads a matrix to the right and bottom with zeros.</span>
 
@@ -1645,7 +1645,7 @@ array([[0, 1, 2, 3, 4, 0],
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_shape</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="s2">&quot;new_shape and matrix dimensions must match&quot;</span>
     <span class="n">padding</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="n">new_dim</span> <span class="o">-</span> <span class="n">old_dim</span><span class="p">)</span> <span class="k">if</span> <span class="n">new_dim</span> <span class="o">&gt;</span> <span class="n">old_dim</span> <span class="k">else</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">old_dim</span><span class="p">,</span> <span class="n">new_dim</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">new_shape</span><span class="p">)]</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">padding</span><span class="p">,</span> <span class="s1">&#39;constant&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">padding</span><span class="p">,</span> <span class="s1">&#39;constant&#39;</span><span class="p">,</span> <span class="n">constant_values</span><span class="o">=</span><span class="n">constant_value</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
