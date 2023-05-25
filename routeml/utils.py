@@ -455,7 +455,6 @@ def get_logit_mask(sol, demands, capacity):
         next_demands = c_demands + cur_demand
         sel = np.squeeze(np.argwhere(next_demands > capacity))
         infeasible_nodes = np.array(c_nodes)[sel]
-        print(sol[i], infeasible_nodes, last_route, cur_demand)
         if a == set(prob):
             mask[i, :] = 0
         else:
