@@ -11,8 +11,22 @@ class TestGetLogitMask(unittest.TestCase):
                 [0., -np.inf, 0., 0., 0.],
                 [0., -np.inf, -np.inf, -np.inf, -np.inf],
                 [-np.inf, -np.inf, -np.inf, 0., 0.],
+                [0., -np.inf, -np.inf, -np.inf, 0.]])
+
+        result_mask = get_logit_mask(sol, demands, capacity)
+
+        np.testing.assert_array_equal(result_mask, expected_mask)
+
+    def test_get_logit_mask_2(self):
+        sol = [0, 1, 2, 0, 3, 4, 0]
+        demands = np.array([0, 5, 8, 3, 6])
+        capacity = 15
+        expected_mask = np.array([[-np.inf, 0., 0., 0., 0.],
+                [0., -np.inf, 0., 0., 0.],
+                [0., -np.inf, -np.inf, -np.inf, -np.inf],
+                [-np.inf, -np.inf, -np.inf, 0., 0.],
                 [0., -np.inf, -np.inf, -np.inf, 0.],
-                [0., -np.inf, -np.inf, -np.inf, -np.inf]])
+                [0., -np.inf, -np.inf, -np.inf, -np.inf],])
 
         result_mask = get_logit_mask(sol, demands, capacity)
 

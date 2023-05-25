@@ -436,8 +436,8 @@ def get_logit_mask(sol, demands, capacity):
         mask (np.ndarray): the logit mask.
     """
     prob = set(sol)
-    mask = np.full((len(sol), len(prob)), 0.0) # mark all as valid
-    for i in range(len(sol)): # NOTE this loop is 100% correct, don't change this.
+    mask = np.full((len(sol) - 1, len(prob)), 0.0) # mark all as valid
+    for i in range(len(sol) - 1): # NOTE this loop is 100% correct, don't change this.
         # a is all nodes that I visited
         a = set(sol[:i+1])
         if sol[i] != 0:
