@@ -26,5 +26,17 @@ class TestSolutionToRoutes(unittest.TestCase):
         routes = solution_to_routes(solution)
         self.assertEqual(routes, expected_routes)
 
+    def test_partial_solution_to_routes_1(self):
+        solution = [0, 1, 0, 2, 3, 0, 4]
+        expected_routes = [[0, 1, 0], [0, 2, 3, 0], [0, 4]]
+        routes = solution_to_routes(solution, partial=True)
+        self.assertEqual(routes, expected_routes)
+
+    def test_partial_solution_to_routes_2(self):
+        solution = [0, 1, 0, 2, 3, 0, 4, 5]
+        expected_routes = [[0, 1, 0], [0, 2, 3, 0], [0, 4, 5]]
+        routes = solution_to_routes(solution, partial=True)
+        self.assertEqual(routes, expected_routes)
+
 if __name__ == '__main__':
     unittest.main()

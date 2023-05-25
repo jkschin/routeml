@@ -49,7 +49,7 @@ def add_depot_to_routes(routes):
 
     return routes
 
-def solution_to_routes(solution):
+def solution_to_routes(solution, partial=False):
     """
     Converts a solution (list of nodes) into a list of routes.
 
@@ -67,8 +67,9 @@ def solution_to_routes(solution):
             routes.append(route)
             route = []
         route.append(node)
+    if partial:
+        routes.append(route)
     return routes
-
 
 def solution_to_adjacency_matrix(cvrp_solution):
     """
@@ -252,7 +253,7 @@ def get_cvrp_cost(routes_or_solution, coordinates, uchoa=False):
 
     return total_cost
 
-def get_route_demand(routes, demand):
+def get_all_route_demands(routes, demand):
     """
     Compute the demand of each route.
 
@@ -272,6 +273,20 @@ def get_route_demand(routes, demand):
                 raise Exception(f"Node {node} not found in the demand dictionary")
         route_demands.append(route_demand)
     return route_demands
+
+def get_route_demand(route, demands):
+    """
+    Compute the demand of a route.
+
+    Args:
+        route (list): List of nodes in the route.
+        demands (list): List containing the corresponding demands for each node.
+
+    Returns:
+        int: Demand of the route.
+    """
+    route_demand = sum(map(lambda node: demands[node], route))
+    return route_demand
 
 def is_feasible(routes, demand, capacity):
     """
@@ -407,7 +422,43 @@ def get_random_solution(N):
         lst.insert(index, 0)
 
     return lst
+    
+def get_logit_mask(sol, demands, capacity):
+    """
+    Gets a logit mask for a given solution. Note that this only takes a full solution.
 
+    Args:
+        sol (list): the solution to mask.
+        demands (np.ndarray): the demands of each node.
+        capacity (int): the capacity of the vehicle.
+    
+    Returns:
+        mask (np.ndarray): the logit mask.
+    """
+    prob = set(sol)
+    mask = np.full((len(sol), len(prob)), 0.0) # mark all as valid
+    for i in range(len(sol)): # NOTE this loop is 100% correct, don't change this.
+        # a is all nodes that I visited
+        a = set(sol[:i+1])
+        if sol[i] != 0:
+            a.remove(0)
+        # mark all visited nodes as invalid
+        mask[i, list(a)] = float("-inf")
 
-
+        # mark all infeasible demand nodes as invalid
+        # this crazy implementation is due to cProfile saying 
+        # list comprehension is super slow. numpy is fast.
+        c_nodes = list(set(prob) - set(sol[:i+1]) - set([0]))
+        last_route = solution_to_routes(sol[:i+1], partial=True)[-1]
+        cur_demand = get_route_demand(last_route, demands)
+        c_demands = demands[c_nodes]
+        next_demands = c_demands + cur_demand
+        sel = np.squeeze(np.argwhere(next_demands > capacity))
+        infeasible_nodes = np.array(c_nodes)[sel]
+        print(sol[i], infeasible_nodes, last_route, cur_demand)
+        if a == set(prob):
+            mask[i, :] = 0
+        else:
+            mask[i, infeasible_nodes.tolist()] = float("-inf")
+    return mask
 
