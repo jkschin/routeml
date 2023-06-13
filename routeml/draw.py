@@ -147,8 +147,8 @@ def concatenate_images(image_paths, grid_size, save_path="test.png"):
         y = row * image_height
         grid.paste(image, (x, y))
 
-    # Display the concatenated image
-    grid.show()
+    # # Display the concatenated image
+    # grid.show()
 
     # Save the concatenated image
     grid.save(save_path)
