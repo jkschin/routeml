@@ -262,6 +262,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#routeml.solvers.hgs_solve_subproblems" class="md-nav__link">
+    hgs_solve_subproblems()
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -331,6 +338,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#routeml.solvers.hgs_solve_subproblems" class="md-nav__link">
+    hgs_solve_subproblems()
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -383,17 +397,93 @@
 
 
 <h3 id="routeml.solvers.hgs_solve" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">hgs_solve</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">demands</span><span class="p">,</span> <span class="n">capacity</span><span class="p">,</span> <span class="n">time_limit</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">hgs_solve</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">demands</span><span class="p">,</span> <span class="n">capacity</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">time_limit</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span></code>
 
 </h3>
 
 
   <div class="doc doc-contents ">
   
-      <p>coords: a numpy array of coordinates, where each row represents the x and y coordinates of a node
-demands: a numpy array of demands, where index 0 represents the demand of the depot (0)
-capacity: integer, capacity of all vehicles
-time_limit: integer, maximum time limit for the solver in seconds</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>coords</code></td>
+          <td>
+          </td>
+          <td><p>a numpy array of coordinates, where each row represents the x and y coordinates of a node</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>demands</code></td>
+          <td>
+          </td>
+          <td><p>a numpy array of demands, where index 0 represents the demand of the depot (0)</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>capacity</code></td>
+          <td>
+          </td>
+          <td><p>integer, capacity of all vehicles</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>subset</code></td>
+          <td>
+          </td>
+          <td><p>a subset of node IDs that we want to solve for</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>time_limit</code></td>
+          <td>
+          </td>
+          <td><p>integer, maximum time limit for the solver in seconds</p></td>
+          <td>
+                <code>5</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>result</code></td>          <td>
+          </td>
+          <td><p>a RoutingSolution from Python package Hygese with the following attributes:
+- cost: the total cost of the solution
+- time: the time taken to solve the problem
+- n_routes: the number of routes in the solution
+- routes: a list of routes, where each route is a list of node IDs, excluding the depots.</p></td>
+        </tr>
+    </tbody>
+  </table>
 
       <details class="quote">
         <summary>Source code in <code>routeml/solvers.py</code></summary>
@@ -425,13 +515,45 @@ time_limit: integer, maximum time limit for the solver in seconds</p>
 <span class="normal">30</span>
 <span class="normal">31</span>
 <span class="normal">32</span>
-<span class="normal">33</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">hgs_solve</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">demands</span><span class="p">,</span> <span class="n">capacity</span><span class="p">,</span> <span class="n">time_limit</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">hgs_solve</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">demands</span><span class="p">,</span> <span class="n">capacity</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">time_limit</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    coords: a numpy array of coordinates, where each row represents the x and y coordinates of a node</span>
-<span class="sd">    demands: a numpy array of demands, where index 0 represents the demand of the depot (0)</span>
-<span class="sd">    capacity: integer, capacity of all vehicles</span>
-<span class="sd">    time_limit: integer, maximum time limit for the solver in seconds</span>
+<span class="sd">    Args:</span>
+<span class="sd">        coords: a numpy array of coordinates, where each row represents the x and y coordinates of a node</span>
+<span class="sd">        demands: a numpy array of demands, where index 0 represents the demand of the depot (0)</span>
+<span class="sd">        capacity: integer, capacity of all vehicles</span>
+<span class="sd">        subset: a subset of node IDs that we want to solve for</span>
+<span class="sd">        time_limit: integer, maximum time limit for the solver in seconds</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        result: a RoutingSolution from Python package Hygese with the following attributes:</span>
+<span class="sd">            - cost: the total cost of the solution</span>
+<span class="sd">            - time: the time taken to solve the problem</span>
+<span class="sd">            - n_routes: the number of routes in the solution</span>
+<span class="sd">            - routes: a list of routes, where each route is a list of node IDs, excluding the depots.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">subset</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">subset</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">subset</span><span class="p">)</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="n">coords</span><span class="p">[</span><span class="n">subset</span><span class="p">]</span>
+        <span class="n">demands</span> <span class="o">=</span> <span class="n">demands</span><span class="p">[</span><span class="n">subset</span><span class="p">]</span>
+        <span class="n">index_to_node</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">node</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">subset</span><span class="p">)}</span>
 
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">coords</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
@@ -453,7 +575,168 @@ time_limit: integer, maximum time limit for the solver in seconds</p>
     <span class="n">data</span><span class="p">[</span><span class="s1">&#39;depot&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="n">result</span> <span class="o">=</span> <span class="n">hgs_solver</span><span class="o">.</span><span class="n">solve_cvrp</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">subset</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">routes</span> <span class="o">=</span> <span class="p">[[</span><span class="n">index_to_node</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">route</span><span class="p">]</span> <span class="k">for</span> <span class="n">route</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">routes</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">result</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="routeml.solvers.hgs_solve_subproblems" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">hgs_solve_subproblems</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">demands</span><span class="p">,</span> <span class="n">capacity</span><span class="p">,</span> <span class="n">subsets</span><span class="p">,</span> <span class="n">time_limit</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>coords</code></td>
+          <td>
+          </td>
+          <td><p>a numpy array of coordinates, where each row represents the x and y coordinates of a node</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>demands</code></td>
+          <td>
+          </td>
+          <td><p>a numpy array of demands, where index 0 represents the demand of the depot (0)</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>capacity</code></td>
+          <td>
+          </td>
+          <td><p>integer, capacity of all vehicles</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>subsets</code></td>
+          <td>
+          </td>
+          <td><p>a list of subsets of node IDs that we want to solve for</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>time_limit</code></td>
+          <td>
+          </td>
+          <td><p>integer, maximum time limit for the solver in seconds</p></td>
+          <td>
+                <code>5</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>cost</code></td>          <td>
+          </td>
+          <td><p>the total cost of the solution</p></td>
+        </tr>
+        <tr>
+<td><code>time</code></td>          <td>
+          </td>
+          <td><p>the time taken to solve the problem</p></td>
+        </tr>
+        <tr>
+<td><code>n_routes</code></td>          <td>
+          </td>
+          <td><p>the number of routes in the solution</p></td>
+        </tr>
+        <tr>
+<td><code>routes</code></td>          <td>
+          </td>
+          <td><p>a list of routes, where each route is a list of node IDs, excluding the depots.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>routeml/solvers.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">hgs_solve_subproblems</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">demands</span><span class="p">,</span> <span class="n">capacity</span><span class="p">,</span> <span class="n">subsets</span><span class="p">,</span> <span class="n">time_limit</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Args:</span>
+<span class="sd">        coords: a numpy array of coordinates, where each row represents the x and y coordinates of a node</span>
+<span class="sd">        demands: a numpy array of demands, where index 0 represents the demand of the depot (0)</span>
+<span class="sd">        capacity: integer, capacity of all vehicles</span>
+<span class="sd">        subsets: a list of subsets of node IDs that we want to solve for</span>
+<span class="sd">        time_limit: integer, maximum time limit for the solver in seconds</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        cost: the total cost of the solution</span>
+<span class="sd">        time: the time taken to solve the problem</span>
+<span class="sd">        n_routes: the number of routes in the solution</span>
+<span class="sd">        routes: a list of routes, where each route is a list of node IDs, excluding the depots.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cost</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">n_routes</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="n">routes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">subset</span> <span class="ow">in</span> <span class="n">subsets</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">hgs_solve</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">demands</span><span class="p">,</span> <span class="n">capacity</span><span class="p">,</span> <span class="n">subset</span><span class="p">,</span> <span class="n">time_limit</span><span class="p">)</span>
+        <span class="n">cost</span> <span class="o">+=</span> <span class="n">result</span><span class="o">.</span><span class="n">cost</span>
+        <span class="n">time</span> <span class="o">+=</span> <span class="n">result</span><span class="o">.</span><span class="n">time</span>
+        <span class="n">n_routes</span> <span class="o">+=</span> <span class="n">result</span><span class="o">.</span><span class="n">n_routes</span>
+        <span class="n">routes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">routes</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cost</span><span class="p">,</span> <span class="n">time</span><span class="p">,</span> <span class="n">n_routes</span><span class="p">,</span> <span class="n">routes</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
