@@ -19,7 +19,7 @@ def get_colors(N):
         colors.append(cc.rainbow[index])
     return colors
 
-def plot_routes(routes, node_coords, save_path):
+def plot_routes(routes, node_coords, save_path, draw_lines=True, draw_linehauls=True):
     """
     Plot the routes on a 2D plane.
 
@@ -28,9 +28,11 @@ def plot_routes(routes, node_coords, save_path):
         node_coords (dict): A dictionary of node coordinates, where the key is
             the node ID and the value is a tuple of the x and y coordinates.
         save_path (str): The path to save the plot to.
+        draw_lines (bool): Whether to draw lines between the nodes in each route.
+        draw_linehauls (bool): Whether to draw the linehauls in each route.
 
     Returns:
-        None
+        save_path (str): The path to the saved plot.
     """
     fig = plt.figure(figsize=(fig_width_pixels / dpi, fig_height_pixels / dpi), dpi=dpi)
 
@@ -39,9 +41,14 @@ def plot_routes(routes, node_coords, save_path):
 
     # Plot each route with a different color
     for i, route in enumerate(routes):
+        if not draw_linehauls:
+            route = route[1: -1]
         x = [node_coords[node][0] for node in route]
         y = [node_coords[node][1] for node in route]
-        plt.plot(x, y, 'o-', color=colors[i])
+        if draw_lines:
+            plt.plot(x, y, 'o-', color=colors[i])
+        else:
+            plt.plot(x, y, 'o', color=colors[i])
 
     # Plot the depot node with an X
     depot_x, depot_y = node_coords[0]
@@ -55,6 +62,17 @@ def plot_routes(routes, node_coords, save_path):
     return save_path
 
 def plot_embeddings(routes, embeddings, save_path="test.png"):
+    """
+    Plot the embeddings in 2D space.
+    
+    Args:
+        routes (list): A list of routes, where each route is a list of node IDs.
+        embeddings (np.ndarray): A 2D array of embeddings, where each row is an
+            embedding vector.
+
+    Returns:
+        save_path (str): The path to the saved plot.
+    """
     fig = plt.figure(figsize=(fig_width_pixels / dpi, fig_height_pixels / dpi), dpi=dpi)
 
     # Colors
@@ -96,6 +114,17 @@ def plot_embeddings(routes, embeddings, save_path="test.png"):
     return save_path
 
 def concatenate_images(image_paths, grid_size, save_path="test.png"):
+    """
+    Concatenate a list of images into a grid.
+
+    Args:
+        image_paths (list): A list of image paths.
+        grid_size (tuple): A tuple of the number of rows and columns in the grid.
+        save_path (str): The path to save the concatenated image to.
+
+    Returns:
+        save_path (str): The path to the saved image.
+    """
     num_images = len(image_paths)
     grid_rows, grid_cols = grid_size
 

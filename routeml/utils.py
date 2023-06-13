@@ -461,3 +461,89 @@ def get_logit_mask(sol, demands, capacity):
             mask[i, infeasible_nodes.tolist()] = float("-inf")
     return mask
 
+def get_graph_embedding(src_key_padding_mask, node_emb):
+    """
+    Given a source key padding mask and node embeddings, this function generates a graph embedding by summing 
+    the embeddings at positions specified by the mask and normalizing by the number of nodes in the graph.
+
+    The function works by inverting the src_key_padding_mask, adding an extra dimension to the mask to match 
+    the node_emb's dimensions, and then extracts the node embeddings at the positions where mask is True. 
+    The resulting embeddings are summed to obtain the graph embedding, which is then normalized by the number 
+    of nodes in the graph.
+    
+    Args:
+        src_key_padding_mask (torch.Tensor): A binary tensor of shape (batch_size, length), 
+        where 0 indicates the position of nodes and 1 otherwise.
+        node_emb (torch.Tensor): A tensor of node embeddings of shape (batch_size, length, node_emb_size).
+    
+    Returns:
+        torch.Tensor: The graph embedding of shape (batch_size, node_emb_size). The embeddings are normalized 
+        by the number of nodes in the graph.
+    """
+    mask = ~src_key_padding_mask
+    if mask.sum() == 0:
+        raise ValueError("The src_key_padding_mask cannot be all 1s.")
+    mask = mask.unsqueeze(2).expand_as(node_emb)
+    extracted_node_embs = node_emb * mask.float()
+    graph_emb = extracted_node_embs.sum(dim=1)
+    graph_emb = graph_emb / (~src_key_padding_mask).sum(dim=1).unsqueeze(1).float()
+    return graph_emb
+
+def get_logit_mask_vector(sol, demands, capacity, N):
+    """
+    Gets a logit mask for a given solution. Note that this only takes a full solution.
+
+    Args:
+        sol (list): the solution to mask.
+        demands (np.ndarray): the demands of each node.
+        capacity (int): the capacity of the vehicle.
+        N (int):
+    
+    Returns:
+        mask (np.ndarray): the logit mask.
+    """
+    prob = set(sol)
+    mask = np.full((len(sol) - 1, len(prob)), 0.0) # mark all as valid
+    for i in range(len(sol) - 1): # NOTE this loop is 100% correct, don't change this.
+        # a is all nodes that I visited
+        a = set(sol[:i+1])
+        if sol[i] != 0:
+            a.remove(0)
+        # mark all visited nodes as invalid
+        mask[i, list(a)] = float("-inf")
+
+        # mark all infeasible demand nodes as invalid
+        # this crazy implementation is due to cProfile saying 
+        # list comprehension is super slow. numpy is fast.
+        c_nodes = list(set(prob) - set(sol[:i+1]) - set([0]))
+        last_route = solution_to_routes(sol[:i+1], partial=True)[-1]
+        cur_demand = get_route_demand(last_route, demands)
+        c_demands = demands[c_nodes]
+        next_demands = c_demands + cur_demand
+        sel = np.squeeze(np.argwhere(next_demands > capacity))
+        infeasible_nodes = np.array(c_nodes)[sel]
+        if a == set(prob):
+            mask[i, :] = 0
+        else:
+            mask[i, infeasible_nodes.tolist()] = float("-inf")
+    return mask
+
+def get_invalid_nodes(sol, demands, capacity):
+    num_nodes = len(demands)
+    invalid_nodes = np.zeros(num_nodes, dtype=np.bool)
+    last_route = solution_to_routes(sol, partial=True)[-1]
+    cur_demand = get_route_demand(last_route, demands)
+
+    # Mark nodes that exceed demand.
+    for i in range(num_nodes):
+        if cur_demand + demands[i] > capacity:
+            invalid_nodes[i] = True
+
+    # Mark visited nodes.
+    visited = set(sol)
+    invalid_nodes[list(visited)] = True
+
+    if sol[-1] != 0:
+        invalid_nodes[0] = False
+
+    return invalid_nodes

@@ -26,5 +26,8 @@ class CVRPIntegrationTest(unittest.TestCase):
 
         concat_path = concatenate_images([fig1_path, fig2_path], [1, 2], save_path="test_output/concat.png")
 
+        plot_routes(routes, node_coords, save_path="test_output/solution-nolinehaul.png", draw_linehauls=False)
+        plot_routes(routes, node_coords, save_path="test_output/solution-onlynodes.png", draw_lines=False)
+
 if __name__ == '__main__':
     unittest.main()
