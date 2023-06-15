@@ -1,5 +1,6 @@
 import numpy as np
 import hygese as hgs
+from multiprocessing import Pool
 from scipy.spatial import distance_matrix
 
 def hgs_solve(coords, demands, capacity, subset=None, time_limit=5):
@@ -64,12 +65,11 @@ def hgs_solve_subproblems(coords, demands, capacity, subsets, time_limit=5):
         n_routes: the number of routes in the solution
         routes: a list of routes, where each route is a list of node IDs, excluding the depots.
     """
-    cost, time, n_routes = 0, 0, 0
-    routes = []
-    for subset in subsets:
-        result = hgs_solve(coords, demands, capacity, subset, time_limit)
-        cost += result.cost
-        time += result.time
-        n_routes += result.n_routes
-        routes.extend(result.routes)
+    with Pool() as p:
+        print("Using {} cores".format(p._processes))
+        results = p.starmap(hgs_solve, [(coords, demands, capacity, subset, time_limit) for subset in subsets])
+        cost = sum(result.cost for result in results)
+        time = sum(result.time for result in results)
+        n_routes = sum(result.n_routes for result in results)
+        routes = [route for result in results for route in result.routes]
     return cost, time, n_routes, routes
