@@ -42,7 +42,7 @@ def hgs_solve(coords, demands, capacity, subset=None, time_limit=5):
     data['service_times'] = np.zeros(n)
     data['demands'] = demands
     data['vehicle_capacity'] = capacity
-    data['num_vehicles'] = 100  # Update with the appropriate number of vehicles
+    data['num_vehicles'] = 10000  # Update with the appropriate number of vehicles
     data['depot'] = 0
 
     result = hgs_solver.solve_cvrp(data)
