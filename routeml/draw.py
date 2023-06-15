@@ -5,6 +5,7 @@ import colorcet as cc
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import numpy as np
+import seaborn as sns
 from PIL import Image
 
 fig_width_pixels = 800
@@ -153,3 +154,56 @@ def concatenate_images(image_paths, grid_size, save_path="test.png"):
     # Save the concatenated image
     grid.save(save_path)
 
+def plot_dmatrix_histogram(distance_matrix, save_path="histogram.png"):
+    """
+    Given a symmetric distance matrix, creates a histogram of distances and saves the plot to a specified location.
+
+    Parameters:
+        distance_matrix (numpy.ndarray): A symmetric matrix containing distances between nodes.
+        save_path (str): Path where the histogram will be saved.
+
+    Returns:
+        None
+    """
+
+    # Get upper triangle of the distance matrix
+    dists_upper = distance_matrix[np.triu_indices(distance_matrix.shape[0], k=1)]
+
+    # Create figure with specified DPI
+    fig = plt.figure(figsize=(fig_width_pixels / dpi, fig_height_pixels / dpi), dpi=dpi)
+
+    # Plot Histogram
+    plt.hist(dists_upper, bins=30)
+    plt.title('Distribution of Pairwise Distances')
+    plt.xlabel('Distance')
+    plt.ylabel('Frequency')
+
+    # Save and close figure
+    plt.savefig(save_path)
+    plt.close(fig)
+
+def plot_dmatrix_heatmap(distance_matrix, cmap="Blues_r", save_path="heatmap.png"):
+    """
+    Given a distance matrix, creates a heatmap and saves the plot to a specified location.
+
+    Parameters:
+        distance_matrix (numpy.ndarray): A symmetric matrix containing distances between nodes.
+        save_path (str): Path where the heatmap will be saved.
+
+    Returns:
+        None
+    """
+
+    # Create figure with specified DPI
+    fig = plt.figure(figsize=(fig_width_pixels / dpi, fig_height_pixels / dpi), dpi=dpi)
+
+    # Plot Heatmap
+    # cmap_options = ["Greys", "YlGnBu", "YlOrRd", "BuPu", "Greens", "Purples", "Blues", "Oranges", "Reds"]
+    sns.heatmap(distance_matrix, cmap=cmap)
+    plt.title('Heatmap of Pairwise Distances')
+    plt.xlabel('Node')
+    plt.ylabel('Node')
+
+    # Save and close figure
+    plt.savefig(save_path)
+    plt.close(fig)

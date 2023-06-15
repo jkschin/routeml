@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='routeml',
-    version='0.12.0',
+    version='0.13.0',
     description='Python package for CVRP utilities',
     author='Your Name',
     author_email='jkschin@mit.edu',
@@ -24,7 +24,8 @@ setup(
         "hygese",
         "colorcet",
         "scikit-learn",
-        "pillow"
+        "pillow",
+        "seaborn"
         # Add any dependencies required by your package
     ],
 )
