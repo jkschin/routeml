@@ -571,7 +571,7 @@
     <span class="n">data</span><span class="p">[</span><span class="s1">&#39;service_times&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
     <span class="n">data</span><span class="p">[</span><span class="s1">&#39;demands&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">demands</span>
     <span class="n">data</span><span class="p">[</span><span class="s1">&#39;vehicle_capacity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">capacity</span>
-    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;num_vehicles&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># Update with the appropriate number of vehicles</span>
+    <span class="n">data</span><span class="p">[</span><span class="s1">&#39;num_vehicles&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10000</span>  <span class="c1"># Update with the appropriate number of vehicles</span>
     <span class="n">data</span><span class="p">[</span><span class="s1">&#39;depot&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="n">result</span> <span class="o">=</span> <span class="n">hgs_solver</span><span class="o">.</span><span class="n">solve_cvrp</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
