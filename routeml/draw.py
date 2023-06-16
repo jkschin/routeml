@@ -20,7 +20,20 @@ def get_colors(N):
         colors.append(cc.rainbow[index])
     return colors
 
-def plot_routes(routes, node_coords, save_path, draw_lines=True, draw_linehauls=True):
+def add_text(plt, text_dict):
+    num_keys = len(text_dict)
+    y_decrement = 0.02
+
+    # Adjust the bottom of the subplot based on the number of keys
+    plt.subplots_adjust(bottom=0.1 + num_keys * y_decrement)
+
+    initial_y = 0.05 + y_decrement * (num_keys - 1)
+    
+    for i, (key, value) in enumerate(text_dict.items()):
+        y_position = initial_y - i * y_decrement
+        plt.text(0.05, y_position, f'{key}: {value}', transform=plt.gcf().transFigure)
+
+def plot_routes(routes, node_coords, save_path, text_dict=None, draw_lines=True, draw_linehauls=True):
     """
     Plot the routes on a 2D plane.
 
@@ -54,6 +67,9 @@ def plot_routes(routes, node_coords, save_path, draw_lines=True, draw_linehauls=
     # Plot the depot node with an X
     depot_x, depot_y = node_coords[0]
     plt.plot(depot_x, depot_y, 'kx', markersize=10, label='Depot')
+
+    if text_dict != None:
+        add_text(plt, text_dict)
 
     plt.xlabel('X')
     plt.ylabel('Y')

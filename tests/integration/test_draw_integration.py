@@ -32,8 +32,16 @@ class CVRPIntegrationTest(unittest.TestCase):
 
         concat_path = concatenate_images([fig1_path, fig2_path], [1, 2], save_path="test_output/concat.png")
 
-        plot_routes(routes, node_coords, save_path="test_output/solution-nolinehaul.png", draw_linehauls=False)
-        plot_routes(routes, node_coords, save_path="test_output/solution-onlynodes.png", draw_lines=False)
+        text_dict = {
+            "Cost": result.cost,
+            "Time": result.time,
+            "Number of Routes": result.n_routes,
+            "Modularity": 0.5,
+            "Number of Clusters": 4
+        }
+
+        plot_routes(routes, node_coords, text_dict=text_dict, save_path="test_output/solution-nolinehaul.png", draw_linehauls=False)
+        plot_routes(routes, node_coords, text_dict=text_dict, save_path="test_output/solution-onlynodes.png", draw_lines=False)
 
     def test_solve_and_plot_cvrp_subset(self):
         random.seed(0)
