@@ -27,11 +27,6 @@ class CVRPIntegrationTest(unittest.TestCase):
         # Plot and save the solution as a PNG file
         fig1_path = plot_routes(routes, node_coords, save_path="test_output/solution.png")
 
-        embeddings = np.random.rand(num_nodes + 1, 20)
-        fig2_path = plot_embeddings(routes, embeddings, save_path="test_output/embeddings.png")
-
-        concat_path = concatenate_images([fig1_path, fig2_path], [1, 2], save_path="test_output/concat.png")
-
         text_dict = {
             "Cost": result.cost,
             "Time": result.time,
@@ -39,6 +34,11 @@ class CVRPIntegrationTest(unittest.TestCase):
             "Modularity": 0.5,
             "Number of Clusters": 4
         }
+
+        embeddings = np.random.rand(num_nodes + 1, 20)
+        fig2_path = plot_embeddings(routes, embeddings, text_dict=text_dict, save_path="test_output/embeddings.png")
+
+        concat_path = concatenate_images([fig1_path, fig2_path], [1, 2], save_path="test_output/concat.png")
 
         plot_routes(routes, node_coords, text_dict=text_dict, save_path="test_output/solution-nolinehaul.png", draw_linehauls=False)
         plot_routes(routes, node_coords, text_dict=text_dict, save_path="test_output/solution-onlynodes.png", draw_lines=False)

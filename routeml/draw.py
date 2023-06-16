@@ -78,7 +78,7 @@ def plot_routes(routes, node_coords, save_path, text_dict=None, draw_lines=True,
     plt.close()
     return save_path
 
-def plot_embeddings(routes, embeddings, save_path="test.png"):
+def plot_embeddings(routes, embeddings, save_path="test.png", text_dict=None):
     """
     Plot the embeddings in 2D space.
     
@@ -123,7 +123,9 @@ def plot_embeddings(routes, embeddings, save_path="test.png"):
     plt.xlabel('Dimension 1')
     plt.ylabel('Dimension 2')
     plt.title('Embeddings in 2D Space')
-    # plt.legend()
+
+    if text_dict != None:
+        add_text(plt, text_dict)
 
     # Save the plot as "test.png"
     plt.savefig(save_path)
