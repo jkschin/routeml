@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 import matplotlib.pyplot as plt
-from routeml.utils import get_cvrp_problem, routes_to_solution, add_depot_to_routes
+from routeml.utils import get_cvrp_problem, routes_to_solution, add_depot_to_routes, rotate_coords
 from routeml.draw import plot_routes, plot_embeddings, concatenate_images
 from routeml.solvers import hgs_solve, hgs_solve_subproblems
 import random
@@ -78,6 +78,30 @@ class CVRPIntegrationTest(unittest.TestCase):
         sol = routes_to_solution(routes)
         self.assertTrue(set(sol) == set(range(101)))
         plot_routes(routes, node_coords, save_path="test_output/subset_solution2.png")
+
+    def test_solve_rotate_and_plot_cvrp(self):
+        random.seed(0)
+
+        # Generate a CVRP problem
+        num_nodes = 100
+        node_coords, demands = get_cvrp_problem(num_nodes)
+        self.assertTrue(len(node_coords) == num_nodes + 1)
+
+        subset = [i for i in range(50)]
+        result = hgs_solve(node_coords, demands, 50, time_limit=2)
+
+        # Successively rotate by 90 and overwrite the node coordinates.
+        routes = result.routes
+        plot_routes(routes, node_coords, save_path="test_output/test_rotate_0.png")
+
+        node_coords = rotate_coords(node_coords, 90)
+        plot_routes(routes, node_coords, save_path="test_output/test_rotate_90.png")
+
+        node_coords = rotate_coords(node_coords, 90)
+        plot_routes(routes, node_coords, save_path="test_output/test_rotate_180.png")
+
+        node_coords = rotate_coords(node_coords, 90)
+        plot_routes(routes, node_coords, save_path="test_output/test_rotate_270.png")
 
 if __name__ == '__main__':
     unittest.main()

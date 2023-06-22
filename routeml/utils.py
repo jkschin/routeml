@@ -547,3 +547,33 @@ def get_invalid_nodes(sol, demands, capacity):
         invalid_nodes[0] = False
 
     return invalid_nodes
+
+
+def rotate_coords(coords, angle):
+    """
+    Rotates a set of coordinates around a given origin point by a specified angle.
+
+    Args:
+        coords (numpy.ndarray): Array of coordinates where each row represents a point (x, y).
+        angle (float): The angle of rotation in degrees.
+
+    Returns:
+        numpy.ndarray: Array of rotated coordinates with the same shape as the input 'coords'.
+    """
+    # convert to radians
+    angle = math.radians(angle)
+
+    origin = coords[0]
+    customers = coords[1:]
+
+    diff = customers - origin
+
+    x_mutate = np.array([math.cos(angle), -math.sin(angle)])
+    qx = origin[0] + np.sum(diff * x_mutate, axis=1)
+
+    y_mutate = np.array([math.sin(angle), math.cos(angle)])
+    qy = origin[0] + np.sum(diff * y_mutate, axis=1)
+
+    out = np.vstack([qx, qy])
+    out = np.concatenate([np.expand_dims(origin, axis=1), out], axis=1)
+    return out.T
