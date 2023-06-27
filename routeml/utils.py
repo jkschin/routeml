@@ -423,20 +423,27 @@ def get_random_solution(N):
 
     return lst
     
-def get_logit_mask(sol, demands, capacity):
+def get_logit_mask(sol, demands, capacity, city_size=None):
     """
     Gets a logit mask for a given solution. Note that this only takes a full solution.
 
     Args:
         sol (list): the solution to mask.
-        demands (np.ndarray): the demands of each node.
+        demands (dict): the demands of each node.
         capacity (int): the capacity of the vehicle.
+        city_size (int): the size of the city (including depot). If None, then it is assumed to be the same as the number of nodes.
     
     Returns:
         mask (np.ndarray): the logit mask.
     """
     prob = set(sol)
-    mask = np.full((len(sol) - 1, len(prob)), 0.0) # mark all as valid
+    if city_size is None:
+        mask = np.full((len(sol) - 1, len(prob)), 0.0) # mark all as valid
+    else:
+        mask = np.full((len(sol) - 1, city_size), 0.0) # mark all as valid
+
+        # mark all nodes not in city as invalid
+        mask[:, list(set(range(city_size)) - prob)] = float("-inf")
     for i in range(len(sol) - 1): # NOTE this loop is 100% correct, don't change this.
         # a is all nodes that I visited
         a = set(sol[:i+1])
@@ -451,7 +458,7 @@ def get_logit_mask(sol, demands, capacity):
         c_nodes = list(set(prob) - set(sol[:i+1]) - set([0]))
         last_route = solution_to_routes(sol[:i+1], partial=True)[-1]
         cur_demand = get_route_demand(last_route, demands)
-        c_demands = demands[c_nodes]
+        c_demands = np.array([demands[c_node] for c_node in c_nodes])
         next_demands = c_demands + cur_demand
         sel = np.squeeze(np.argwhere(next_demands > capacity))
         infeasible_nodes = np.array(c_nodes)[sel]
