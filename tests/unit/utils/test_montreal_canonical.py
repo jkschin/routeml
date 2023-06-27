@@ -43,5 +43,12 @@ class TestConversionFunctions(unittest.TestCase):
         montreal_sol_back = canonical_to_montreal(canonical_sol, node_to_canonical)
         self.assertEqual(montreal_sol, montreal_sol_back)
 
+    def test_canonical_to_canonical_and_back(self):
+        canonical_sol = [0, 1, 2, 0, 3, 4, 0]
+        canonical_sol_2, node_to_canonical = montreal_to_canonical(canonical_sol)
+        canonical_sol_back = canonical_to_montreal(canonical_sol_2, node_to_canonical)
+        self.assertEqual(canonical_sol, canonical_sol_2)
+        self.assertEqual(canonical_sol, canonical_sol_back)
+
 if __name__ == '__main__':
     unittest.main()
