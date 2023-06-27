@@ -584,3 +584,14 @@ def rotate_coords(coords, angle):
     out = np.vstack([qx, qy])
     out = np.concatenate([np.expand_dims(origin, axis=1), out], axis=1)
     return out.T
+
+def montreal_to_canonical(sol):
+    node_to_canonical = {}
+    for i, node in enumerate(sorted(set(sol))):
+        node_to_canonical[node] = i
+    return [node_to_canonical[node] for node in sol], node_to_canonical
+
+def canonical_to_montreal(sol, node_to_canonical):
+    canonical_to_node = {v: k for k, v in node_to_canonical.items()}
+    return [canonical_to_node[node] for node in sol]
+
