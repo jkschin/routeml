@@ -4,6 +4,7 @@ import math
 import random
 import numpy as np
 
+
 def routes_to_solution(routes):
     """
     Converts a list of routes into a solution (list of routes).
@@ -23,6 +24,7 @@ def routes_to_solution(routes):
             route = route[1:]
         solution += route
     return solution
+
 
 def add_depot_to_routes(routes):
     """
@@ -49,6 +51,7 @@ def add_depot_to_routes(routes):
 
     return routes
 
+
 def solution_to_routes(solution, partial=False):
     """
     Converts a solution (list of nodes) into a list of routes.
@@ -71,6 +74,7 @@ def solution_to_routes(solution, partial=False):
         routes.append(route)
     return routes
 
+
 def solution_to_adjacency_matrix(cvrp_solution):
     """
     Converts a CVRP solution into a symmetric adjacency matrix.
@@ -89,6 +93,7 @@ def solution_to_adjacency_matrix(cvrp_solution):
         matrix[cvrp_solution[i + 1]][cvrp_solution[i]] = 1
     return matrix
 
+
 def column_normalize_adjacency_matrix(adj_matrix):
     """
     Normalize an adjacency matrix by column.
@@ -102,6 +107,7 @@ def column_normalize_adjacency_matrix(adj_matrix):
     col_sums = np.sum(adj_matrix, axis=0)
     normalized_matrix = adj_matrix / col_sums[np.newaxis, :]
     return normalized_matrix
+
 
 def parse_vrplib_file(source):
     """
@@ -148,7 +154,8 @@ def parse_vrplib_file(source):
     if dimension_match:
         data['dimension'] = int(dimension_match.group(1))
 
-    edge_weight_type_match = re.search(r'EDGE_WEIGHT_TYPE\s*:\s*(\S+)', content)
+    edge_weight_type_match = re.search(
+        r'EDGE_WEIGHT_TYPE\s*:\s*(\S+)', content)
     if edge_weight_type_match:
         data['edge_weight_type'] = edge_weight_type_match.group(1)
 
@@ -156,17 +163,20 @@ def parse_vrplib_file(source):
     if capacity_match:
         data['capacity'] = int(capacity_match.group(1))
 
-    node_coords_match = re.search(r'NODE_COORD_SECTION\s*(.+?)\s*DEMAND_SECTION', content, re.DOTALL)
+    node_coords_match = re.search(
+        r'NODE_COORD_SECTION\s*(.+?)\s*DEMAND_SECTION', content, re.DOTALL)
     if node_coords_match:
         node_coords_str = node_coords_match.group(1).strip()
         node_coords = []
         for line in node_coords_str.split('\n'):
-            node_id, x, y = re.findall(r'(\d+)\s+([-+]?\d*\.?\d+)\s+([-+]?\d*\.?\d+)', line)[0]
+            node_id, x, y = re.findall(
+                r'(\d+)\s+([-+]?\d*\.?\d+)\s+([-+]?\d*\.?\d+)', line)[0]
             node_coords.append([float(x), float(y)])
         data['node_coords'] = np.array(node_coords)
 
     # Extracting demand information
-    demand_section_match = re.search(r'DEMAND_SECTION\s*(.+?)\s*DEPOT_SECTION', content, re.DOTALL)
+    demand_section_match = re.search(
+        r'DEMAND_SECTION\s*(.+?)\s*DEPOT_SECTION', content, re.DOTALL)
     if demand_section_match:
         demand_section_str = demand_section_match.group(1).strip()
         demand = []
@@ -176,13 +186,16 @@ def parse_vrplib_file(source):
         data['demand'] = np.array(demand)
 
     # Extracting depot information
-    depot_section_match = re.search(r'DEPOT_SECTION\s*(.+?)\s*EOF', content, re.DOTALL)
+    depot_section_match = re.search(
+        r'DEPOT_SECTION\s*(.+?)\s*EOF', content, re.DOTALL)
     if depot_section_match:
         depot_section_str = depot_section_match.group(1).strip()
-        depot_ids = [int(node_id) for node_id in re.findall(r'(\d+)\s*[^-0-9]', depot_section_str)]
+        depot_ids = [int(node_id) for node_id in re.findall(
+            r'(\d+)\s*[^-0-9]', depot_section_str)]
         data['depot_ids'] = depot_ids
 
     return data
+
 
 def parse_vrplib_solution(source):
     """
@@ -221,6 +234,7 @@ def parse_vrplib_solution(source):
 
     return routes, cost
 
+
 def get_cvrp_cost(routes_or_solution, coordinates, uchoa=False):
     """
     Compute the total cost of a CVRP solution.
@@ -238,7 +252,8 @@ def get_cvrp_cost(routes_or_solution, coordinates, uchoa=False):
     elif isinstance(routes_or_solution, list):
         solution = routes_or_solution
     else:
-        raise ValueError("Invalid input. Expected a nested list of routes or a solution.")
+        raise ValueError(
+            "Invalid input. Expected a nested list of routes or a solution.")
 
     total_cost = 0.0
     for i in range(len(solution) - 1):
@@ -252,6 +267,7 @@ def get_cvrp_cost(routes_or_solution, coordinates, uchoa=False):
         total_cost += distance
 
     return total_cost
+
 
 def get_all_route_demands(routes, demand):
     """
@@ -270,9 +286,11 @@ def get_all_route_demands(routes, demand):
             try:
                 route_demand += demand[node]
             except KeyError:
-                raise Exception(f"Node {node} not found in the demand dictionary")
+                raise Exception(
+                    f"Node {node} not found in the demand dictionary")
         route_demands.append(route_demand)
     return route_demands
+
 
 def get_route_demand(route, demands):
     """
@@ -287,6 +305,7 @@ def get_route_demand(route, demands):
     """
     route_demand = sum(map(lambda node: demands[node], route))
     return route_demand
+
 
 def is_feasible(routes, demand, capacity):
     """
@@ -314,6 +333,7 @@ def is_feasible(routes, demand, capacity):
             return False
 
     return True
+
 
 def get_cvrp_problem(num_nodes):
     """
@@ -349,6 +369,7 @@ def get_cvrp_problem(num_nodes):
 
     return node_coords, demands
 
+
 def pad_matrix(matrix, new_shape, constant_value=0):
     """
     Pads a matrix to the right and bottom with zeros.
@@ -369,9 +390,12 @@ def pad_matrix(matrix, new_shape, constant_value=0):
            [0, 0, 0, 0, 0, 0]])
     ```
     """
-    assert len(new_shape) == len(matrix.shape), "new_shape and matrix dimensions must match"
-    padding = [(0, new_dim - old_dim) if new_dim > old_dim else (0, 0) for old_dim, new_dim in zip(matrix.shape, new_shape)]
+    assert len(new_shape) == len(
+        matrix.shape), "new_shape and matrix dimensions must match"
+    padding = [(0, new_dim - old_dim) if new_dim > old_dim else (0, 0)
+               for old_dim, new_dim in zip(matrix.shape, new_shape)]
     return np.pad(matrix, padding, 'constant', constant_values=constant_value)
+
 
 def get_submatrix(indices, matrix, new_shape):
     """
@@ -397,13 +421,14 @@ def get_submatrix(indices, matrix, new_shape):
     submatrix = matrix[:, indices]
     return pad_matrix(submatrix, new_shape)
 
+
 def get_random_solution(N):
     """
     Generates a random CVRP solution. Mostly for debugging purposes.
 
     Args:
         N (int): Number of nodes in the problem. Excluding depot.
-    
+
     Returns:
         lst (list): List containing the solution.
     """
@@ -416,13 +441,16 @@ def get_random_solution(N):
     # Randomly insert 1 to 5 zeros in between
     num_zeros = random.randint(1, 5)
     for _ in range(num_zeros):
-        index = random.randint(1, len(lst) - 1)  # Select a random index between 1 and len(lst)-1
+        # Select a random index between 1 and len(lst)-1
+        index = random.randint(1, len(lst) - 1)
         while lst[index] == 0 or lst[index-1] == 0:
-            index = random.randint(1, len(lst) - 1)  # Select a new index if adjacent elements are already 0
+            # Select a new index if adjacent elements are already 0
+            index = random.randint(1, len(lst) - 1)
         lst.insert(index, 0)
 
     return lst
-    
+
+
 def get_logit_mask(sol, demands, capacity, city_size=None):
     """
     Gets a logit mask for a given solution. Note that this only takes a full solution.
@@ -431,20 +459,22 @@ def get_logit_mask(sol, demands, capacity, city_size=None):
         sol (list): the solution to mask.
         demands (dict): the demands of each node.
         capacity (int): the capacity of the vehicle.
-        city_size (int): the size of the city (including depot). If None, then it is assumed to be the same as the number of nodes.
-    
+        city_size (int): the size of the city (including depot). If None, then it is assumed to 
+        be the same as the number of nodes.
+
     Returns:
         mask (np.ndarray): the logit mask.
     """
     prob = set(sol)
     if city_size is None:
-        mask = np.full((len(sol) - 1, len(prob)), 0.0) # mark all as valid
+        mask = np.full((len(sol) - 1, len(prob)), 0.0)  # mark all as valid
     else:
-        mask = np.full((len(sol) - 1, city_size), 0.0) # mark all as valid
+        mask = np.full((len(sol) - 1, city_size), 0.0)  # mark all as valid
 
         # mark all nodes not in city as invalid
         mask[:, list(set(range(city_size)) - prob)] = float("-inf")
-    for i in range(len(sol) - 1): # NOTE this loop is 100% correct, don't change this.
+    # NOTE this loop is 100% correct, don't change this.
+    for i in range(len(sol) - 1):
         # a is all nodes that I visited
         a = set(sol[:i+1])
         if sol[i] != 0:
@@ -453,7 +483,7 @@ def get_logit_mask(sol, demands, capacity, city_size=None):
         mask[i, list(a)] = float("-inf")
 
         # mark all infeasible demand nodes as invalid
-        # this crazy implementation is due to cProfile saying 
+        # this crazy implementation is due to cProfile saying
         # list comprehension is super slow. numpy is fast.
         c_nodes = list(set(prob) - set(sol[:i+1]) - set([0]))
         last_route = solution_to_routes(sol[:i+1], partial=True)[-1]
@@ -468,6 +498,7 @@ def get_logit_mask(sol, demands, capacity, city_size=None):
             mask[i, infeasible_nodes.tolist()] = float("-inf")
     return mask
 
+
 def get_graph_embedding(src_key_padding_mask, node_emb):
     """
     Given a source key padding mask and node embeddings, this function generates a graph embedding by summing 
@@ -477,12 +508,12 @@ def get_graph_embedding(src_key_padding_mask, node_emb):
     the node_emb's dimensions, and then extracts the node embeddings at the positions where mask is True. 
     The resulting embeddings are summed to obtain the graph embedding, which is then normalized by the number 
     of nodes in the graph.
-    
+
     Args:
         src_key_padding_mask (torch.Tensor): A binary tensor of shape (batch_size, length), 
         where 0 indicates the position of nodes and 1 otherwise.
         node_emb (torch.Tensor): A tensor of node embeddings of shape (batch_size, length, node_emb_size).
-    
+
     Returns:
         torch.Tensor: The graph embedding of shape (batch_size, node_emb_size). The embeddings are normalized 
         by the number of nodes in the graph.
@@ -493,47 +524,55 @@ def get_graph_embedding(src_key_padding_mask, node_emb):
     mask = mask.unsqueeze(2).expand_as(node_emb)
     extracted_node_embs = node_emb * mask.float()
     graph_emb = extracted_node_embs.sum(dim=1)
-    graph_emb = graph_emb / (~src_key_padding_mask).sum(dim=1).unsqueeze(1).float()
+    graph_emb = graph_emb / \
+        (~src_key_padding_mask).sum(dim=1).unsqueeze(1).float()
     return graph_emb
 
-def get_logit_mask_vector(sol, demands, capacity, N):
+
+def get_logit_mask_vector(prob, sol, demands, capacity, city_size):
     """
-    Gets a logit mask for a given solution. Note that this only takes a full solution.
+    Gets a logit mask for a given solution. 
 
     Args:
-        sol (list): the solution to mask.
-        demands (np.ndarray): the demands of each node.
+        prob (list): the list of nodes in the problem.
+        sol (list): the solution to mask. Partial solution is fine.
+        demands (dict): the demands of each node.
         capacity (int): the capacity of the vehicle.
-        N (int):
-    
-    Returns:
-        mask (np.ndarray): the logit mask.
-    """
-    prob = set(sol)
-    mask = np.full((len(sol) - 1, len(prob)), 0.0) # mark all as valid
-    for i in range(len(sol) - 1): # NOTE this loop is 100% correct, don't change this.
-        # a is all nodes that I visited
-        a = set(sol[:i+1])
-        if sol[i] != 0:
-            a.remove(0)
-        # mark all visited nodes as invalid
-        mask[i, list(a)] = float("-inf")
+        city_size (int): the size of the city (including depot).
 
-        # mark all infeasible demand nodes as invalid
-        # this crazy implementation is due to cProfile saying 
-        # list comprehension is super slow. numpy is fast.
-        c_nodes = list(set(prob) - set(sol[:i+1]) - set([0]))
-        last_route = solution_to_routes(sol[:i+1], partial=True)[-1]
-        cur_demand = get_route_demand(last_route, demands)
-        c_demands = demands[c_nodes]
-        next_demands = c_demands + cur_demand
-        sel = np.squeeze(np.argwhere(next_demands > capacity))
-        infeasible_nodes = np.array(c_nodes)[sel]
-        if a == set(prob):
-            mask[i, :] = 0
-        else:
-            mask[i, infeasible_nodes.tolist()] = float("-inf")
+    Returns:
+        mask (np.ndarray): the logit mask for the last state.
+    """
+
+    # Initialize mask
+    mask = np.zeros(city_size)
+
+    # Nodes not in problem
+    nodes_not_in_problem = set(range(city_size)) - set(prob)
+
+    # Visited nodes
+    visited_nodes = set(sol)
+
+    # Nodes that violate capacity constraint
+    nodes_violate_capacity = set()
+    last_route = solution_to_routes(sol, partial=True)[-1]
+    cur_demand = get_route_demand(last_route, demands)
+    for node in prob:
+        node_demand = demands[node]
+        if cur_demand + node_demand > capacity:
+            nodes_violate_capacity.add(node)
+
+    # Mask
+    mask[list(nodes_not_in_problem)] = float("-inf")
+    mask[list(visited_nodes)] = float("-inf")
+    mask[list(nodes_violate_capacity)] = float("-inf")
+
+    if sol[-1] == 0:
+        mask[0] = float("-inf")
+    else:
+        mask[0] = 0
     return mask
+
 
 def get_invalid_nodes(sol, demands, capacity):
     num_nodes = len(demands)
@@ -585,13 +624,42 @@ def rotate_coords(coords, angle):
     out = np.concatenate([np.expand_dims(origin, axis=1), out], axis=1)
     return out.T
 
+
 def montreal_to_canonical(sol):
     node_to_canonical = {}
     for i, node in enumerate(sorted(set(sol))):
         node_to_canonical[node] = i
     return [node_to_canonical[node] for node in sol], node_to_canonical
 
+
 def canonical_to_montreal(sol, node_to_canonical):
     canonical_to_node = {v: k for k, v in node_to_canonical.items()}
     return [canonical_to_node[node] for node in sol]
 
+
+def estimate_batch_size(gpu_memory_bytes, input_shape, total_params):
+    # Constants
+    bytes_per_float32 = 4
+
+    # Calculate input size
+    input_size = 1
+    for dim in input_shape:
+        input_size *= dim
+
+    # Sizes in bytes
+    input_size_bytes = input_size * bytes_per_float32
+    model_size_bytes = total_params * bytes_per_float32
+
+    # A rough estimate of the memory needed for forward and backward passes
+    # This is quite a rough estimate; the actual memory usage can be significantly higher
+    # depending on the model architecture and specific operations used in the forward pass.
+    forward_backward_bytes = 2 * model_size_bytes
+
+    # An estimate of the memory needed for one batch
+    batch_memory_bytes = input_size_bytes + \
+        model_size_bytes + forward_backward_bytes
+
+    # Estimate the maximum batch size that would fit in memory
+    batch_size = gpu_memory_bytes // batch_memory_bytes
+
+    return batch_size
