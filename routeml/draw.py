@@ -12,6 +12,7 @@ fig_width_pixels = 800
 fig_height_pixels = 800
 dpi = 100
 
+
 def get_colors(N):
     colors = []
     step = 256 / N
@@ -19,6 +20,7 @@ def get_colors(N):
         index = int(i * step)
         colors.append(cc.rainbow[index])
     return colors
+
 
 def add_text(plt, text_dict):
     num_keys = len(text_dict)
@@ -28,10 +30,12 @@ def add_text(plt, text_dict):
     plt.subplots_adjust(bottom=0.1 + num_keys * y_decrement)
 
     initial_y = 0.05 + y_decrement * (num_keys - 1)
-    
+
     for i, (key, value) in enumerate(text_dict.items()):
         y_position = initial_y - i * y_decrement
-        plt.text(0.05, y_position, f'{key}: {value}', transform=plt.gcf().transFigure)
+        plt.text(0.05, y_position, f'{key}: {value}',
+                 transform=plt.gcf().transFigure)
+
 
 def plot_routes(routes, node_coords, save_path, text_dict=None, draw_lines=True, draw_linehauls=True):
     """
@@ -48,7 +52,8 @@ def plot_routes(routes, node_coords, save_path, text_dict=None, draw_lines=True,
     Returns:
         save_path (str): The path to the saved plot.
     """
-    fig = plt.figure(figsize=(fig_width_pixels / dpi, fig_height_pixels / dpi), dpi=dpi)
+    fig = plt.figure(figsize=(fig_width_pixels / dpi,
+                     fig_height_pixels / dpi), dpi=dpi)
 
     # Create a list of unique colors for each route
     colors = get_colors(len(routes))
@@ -74,14 +79,17 @@ def plot_routes(routes, node_coords, save_path, text_dict=None, draw_lines=True,
     plt.xlabel('X')
     plt.ylabel('Y')
     plt.title('Routes')
+    plt.xlim(0, 1)
+    plt.ylim(0, 1)
     plt.savefig(save_path)
     plt.close()
     return save_path
 
+
 def plot_embeddings(routes, embeddings, save_path="test.png", text_dict=None):
     """
     Plot the embeddings in 2D space.
-    
+
     Args:
         routes (list): A list of routes, where each route is a list of node IDs.
         embeddings (np.ndarray): A 2D array of embeddings, where each row is an
@@ -90,7 +98,8 @@ def plot_embeddings(routes, embeddings, save_path="test.png", text_dict=None):
     Returns:
         save_path (str): The path to the saved plot.
     """
-    fig = plt.figure(figsize=(fig_width_pixels / dpi, fig_height_pixels / dpi), dpi=dpi)
+    fig = plt.figure(figsize=(fig_width_pixels / dpi,
+                     fig_height_pixels / dpi), dpi=dpi)
 
     # Colors
     colors = get_colors(len(routes))
@@ -132,6 +141,7 @@ def plot_embeddings(routes, embeddings, save_path="test.png", text_dict=None):
     plt.close()
     return save_path
 
+
 def concatenate_images(image_paths, grid_size, save_path="test.png"):
     """
     Concatenate a list of images into a grid.
@@ -172,6 +182,7 @@ def concatenate_images(image_paths, grid_size, save_path="test.png"):
     # Save the concatenated image
     grid.save(save_path)
 
+
 def plot_dmatrix_histogram(distance_matrix, save_path="histogram.png"):
     """
     Given a symmetric distance matrix, creates a histogram of distances and saves the plot to a specified location.
@@ -185,10 +196,12 @@ def plot_dmatrix_histogram(distance_matrix, save_path="histogram.png"):
     """
 
     # Get upper triangle of the distance matrix
-    dists_upper = distance_matrix[np.triu_indices(distance_matrix.shape[0], k=1)]
+    dists_upper = distance_matrix[np.triu_indices(
+        distance_matrix.shape[0], k=1)]
 
     # Create figure with specified DPI
-    fig = plt.figure(figsize=(fig_width_pixels / dpi, fig_height_pixels / dpi), dpi=dpi)
+    fig = plt.figure(figsize=(fig_width_pixels / dpi,
+                     fig_height_pixels / dpi), dpi=dpi)
 
     # Plot Histogram
     plt.hist(dists_upper, bins=30)
@@ -199,6 +212,7 @@ def plot_dmatrix_histogram(distance_matrix, save_path="histogram.png"):
     # Save and close figure
     plt.savefig(save_path)
     plt.close(fig)
+
 
 def plot_dmatrix_heatmap(distance_matrix, cmap="Blues_r", save_path="heatmap.png"):
     """
@@ -213,7 +227,8 @@ def plot_dmatrix_heatmap(distance_matrix, cmap="Blues_r", save_path="heatmap.png
     """
 
     # Create figure with specified DPI
-    fig = plt.figure(figsize=(fig_width_pixels / dpi, fig_height_pixels / dpi), dpi=dpi)
+    fig = plt.figure(figsize=(fig_width_pixels / dpi,
+                     fig_height_pixels / dpi), dpi=dpi)
 
     # Plot Heatmap
     # cmap_options = ["Greys", "YlGnBu", "YlOrRd", "BuPu", "Greens", "Purples", "Blues", "Oranges", "Reds"]
