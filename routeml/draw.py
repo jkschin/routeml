@@ -37,7 +37,7 @@ def add_text(plt, text_dict):
                  transform=plt.gcf().transFigure)
 
 
-def plot_routes(routes, node_coords, save_path, text_dict=None, draw_lines=True, draw_linehauls=True):
+def plot_routes(routes, node_coords, save_path, title="", text_dict=None, draw_lines=True, draw_linehauls=True):
     """
     Plot the routes on a 2D plane.
 
@@ -78,7 +78,7 @@ def plot_routes(routes, node_coords, save_path, text_dict=None, draw_lines=True,
 
     plt.xlabel('X')
     plt.ylabel('Y')
-    plt.title('Routes')
+    plt.title(title)
     plt.xlim(0, 1)
     plt.ylim(0, 1)
     plt.savefig(save_path, bbox_inches='tight', pad_inches=0)
