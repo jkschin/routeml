@@ -512,7 +512,8 @@
 
       <details class="quote">
         <summary>Source code in <code>routeml/draw.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">145</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">144</span>
+<span class="normal">145</span>
 <span class="normal">146</span>
 <span class="normal">147</span>
 <span class="normal">148</span>
@@ -549,8 +550,7 @@
 <span class="normal">179</span>
 <span class="normal">180</span>
 <span class="normal">181</span>
-<span class="normal">182</span>
-<span class="normal">183</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">concatenate_images</span><span class="p">(</span><span class="n">image_paths</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;test.png&quot;</span><span class="p">):</span>
+<span class="normal">182</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">concatenate_images</span><span class="p">(</span><span class="n">image_paths</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;test.png&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Concatenate a list of images into a grid.</span>
 
@@ -662,7 +662,8 @@
 
       <details class="quote">
         <summary>Source code in <code>routeml/draw.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">217</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">216</span>
+<span class="normal">217</span>
 <span class="normal">218</span>
 <span class="normal">219</span>
 <span class="normal">220</span>
@@ -686,8 +687,7 @@
 <span class="normal">238</span>
 <span class="normal">239</span>
 <span class="normal">240</span>
-<span class="normal">241</span>
-<span class="normal">242</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_dmatrix_heatmap</span><span class="p">(</span><span class="n">distance_matrix</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Blues_r&quot;</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;heatmap.png&quot;</span><span class="p">):</span>
+<span class="normal">241</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_dmatrix_heatmap</span><span class="p">(</span><span class="n">distance_matrix</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Blues_r&quot;</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;heatmap.png&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Given a distance matrix, creates a heatmap and saves the plot to a specified location.</span>
 
@@ -711,7 +711,7 @@
     <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Node&#39;</span><span class="p">)</span>
 
     <span class="c1"># Save and close figure</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">pad_inches</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
       </details>
@@ -786,7 +786,8 @@
 
       <details class="quote">
         <summary>Source code in <code>routeml/draw.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">186</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">185</span>
+<span class="normal">186</span>
 <span class="normal">187</span>
 <span class="normal">188</span>
 <span class="normal">189</span>
@@ -813,8 +814,7 @@
 <span class="normal">210</span>
 <span class="normal">211</span>
 <span class="normal">212</span>
-<span class="normal">213</span>
-<span class="normal">214</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_dmatrix_histogram</span><span class="p">(</span><span class="n">distance_matrix</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;histogram.png&quot;</span><span class="p">):</span>
+<span class="normal">213</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_dmatrix_histogram</span><span class="p">(</span><span class="n">distance_matrix</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;histogram.png&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Given a symmetric distance matrix, creates a histogram of distances and saves the plot to a specified location.</span>
 
@@ -841,7 +841,7 @@
     <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency&#39;</span><span class="p">)</span>
 
     <span class="c1"># Save and close figure</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">pad_inches</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
       </details>
@@ -970,8 +970,7 @@ embedding vector.</p></td>
 <span class="normal">138</span>
 <span class="normal">139</span>
 <span class="normal">140</span>
-<span class="normal">141</span>
-<span class="normal">142</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_embeddings</span><span class="p">(</span><span class="n">routes</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;test.png&quot;</span><span class="p">,</span> <span class="n">text_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="normal">141</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_embeddings</span><span class="p">(</span><span class="n">routes</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="s2">&quot;test.png&quot;</span><span class="p">,</span> <span class="n">text_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot the embeddings in 2D space.</span>
 
@@ -1021,8 +1020,7 @@ embedding vector.</p></td>
     <span class="k">if</span> <span class="n">text_dict</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">add_text</span><span class="p">(</span><span class="n">plt</span><span class="p">,</span> <span class="n">text_dict</span><span class="p">)</span>
 
-    <span class="c1"># Save the plot as &quot;test.png&quot;</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">pad_inches</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">save_path</span>
 </code></pre></div></td></tr></table></div>
@@ -1036,7 +1034,7 @@ embedding vector.</p></td>
 
 
 <h3 id="routeml.draw.plot_routes" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">plot_routes</span><span class="p">(</span><span class="n">routes</span><span class="p">,</span> <span class="n">node_coords</span><span class="p">,</span> <span class="n">save_path</span><span class="p">,</span> <span class="n">text_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">draw_lines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">draw_linehauls</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">plot_routes</span><span class="p">(</span><span class="n">routes</span><span class="p">,</span> <span class="n">node_coords</span><span class="p">,</span> <span class="n">save_path</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">text_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">draw_lines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">draw_linehauls</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
 </h3>
 
@@ -1176,7 +1174,7 @@ the node ID and the value is a tuple of the x and y coordinates.</p></td>
 <span class="normal">83</span>
 <span class="normal">84</span>
 <span class="normal">85</span>
-<span class="normal">86</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_routes</span><span class="p">(</span><span class="n">routes</span><span class="p">,</span> <span class="n">node_coords</span><span class="p">,</span> <span class="n">save_path</span><span class="p">,</span> <span class="n">text_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">draw_lines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">draw_linehauls</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="normal">86</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_routes</span><span class="p">(</span><span class="n">routes</span><span class="p">,</span> <span class="n">node_coords</span><span class="p">,</span> <span class="n">save_path</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">draw_lines</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">draw_linehauls</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot the routes on a 2D plane.</span>
 
@@ -1217,10 +1215,10 @@ the node ID and the value is a tuple of the x and y coordinates.</p></td>
 
     <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Y&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Routes&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">pad_inches</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">save_path</span>
 </code></pre></div></td></tr></table></div>
