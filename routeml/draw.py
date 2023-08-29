@@ -81,7 +81,7 @@ def plot_routes(routes, node_coords, save_path, text_dict=None, draw_lines=True,
     plt.title('Routes')
     plt.xlim(0, 1)
     plt.ylim(0, 1)
-    plt.savefig(save_path)
+    plt.savefig(save_path, bbox_inches='tight', pad_inches=0)
     plt.close()
     return save_path
 
@@ -136,8 +136,7 @@ def plot_embeddings(routes, embeddings, save_path="test.png", text_dict=None):
     if text_dict != None:
         add_text(plt, text_dict)
 
-    # Save the plot as "test.png"
-    plt.savefig(save_path)
+    plt.savefig(save_path, bbox_inches='tight', pad_inches=0)
     plt.close()
     return save_path
 
@@ -210,7 +209,7 @@ def plot_dmatrix_histogram(distance_matrix, save_path="histogram.png"):
     plt.ylabel('Frequency')
 
     # Save and close figure
-    plt.savefig(save_path)
+    plt.savefig(save_path, bbox_inches='tight', pad_inches=0)
     plt.close(fig)
 
 
@@ -238,5 +237,5 @@ def plot_dmatrix_heatmap(distance_matrix, cmap="Blues_r", save_path="heatmap.png
     plt.ylabel('Node')
 
     # Save and close figure
-    plt.savefig(save_path)
+    plt.savefig(save_path, bbox_inches='tight', pad_inches=0)
     plt.close(fig)
