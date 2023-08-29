@@ -3,7 +3,8 @@ import hygese as hgs
 from multiprocessing import Pool
 from scipy.spatial import distance_matrix
 
-def hgs_solve(coords, demands, capacity, subset=None, time_limit=5):
+
+def hgs_solve(coords, demands, capacity, subset=None, time_limit=5, seed=0):
     """
     Args:
         coords: a numpy array of coordinates, where each row represents the x and y coordinates of a node
@@ -11,7 +12,7 @@ def hgs_solve(coords, demands, capacity, subset=None, time_limit=5):
         capacity: integer, capacity of all vehicles
         subset: a subset of node IDs that we want to solve for
         time_limit: integer, maximum time limit for the solver in seconds
-    
+
     Returns:
         result: a RoutingSolution from Python package Hygese with the following attributes:
             - cost: the total cost of the solution
@@ -31,7 +32,7 @@ def hgs_solve(coords, demands, capacity, subset=None, time_limit=5):
     y = coords[:, 1]
 
     # Solver initialization
-    ap = hgs.AlgorithmParameters(timeLimit=time_limit)
+    ap = hgs.AlgorithmParameters(timeLimit=time_limit, seed=seed)
     hgs_solver = hgs.Solver(parameters=ap, verbose=False)
 
     # Data preparation
@@ -42,13 +43,16 @@ def hgs_solve(coords, demands, capacity, subset=None, time_limit=5):
     data['service_times'] = np.zeros(n)
     data['demands'] = demands
     data['vehicle_capacity'] = capacity
-    data['num_vehicles'] = 10000  # Update with the appropriate number of vehicles
+    # Update with the appropriate number of vehicles
+    data['num_vehicles'] = 10000
     data['depot'] = 0
 
     result = hgs_solver.solve_cvrp(data)
     if subset != None:
-        result.routes = [[index_to_node[i] for i in route] for route in result.routes]
+        result.routes = [[index_to_node[i] for i in route]
+                         for route in result.routes]
     return result
+
 
 def hgs_solve_subproblems(coords, demands, capacity, subsets, time_limit=5):
     """
@@ -67,7 +71,8 @@ def hgs_solve_subproblems(coords, demands, capacity, subsets, time_limit=5):
     """
     with Pool() as p:
         print("Using {} cores".format(p._processes))
-        results = p.starmap(hgs_solve, [(coords, demands, capacity, subset, time_limit) for subset in subsets])
+        results = p.starmap(hgs_solve, [
+                            (coords, demands, capacity, subset, time_limit) for subset in subsets])
         cost = sum(result.cost for result in results)
         time = sum(result.time for result in results)
         n_routes = sum(result.n_routes for result in results)
